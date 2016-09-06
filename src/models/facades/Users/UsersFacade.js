@@ -3,7 +3,6 @@
 var userEntity = require('../../entities/User');
 var addressEntity = require('../../entities/Address');
 var contactEntity = require('../../entities/Contact');
-var clone = require('clone');
 var jwt = require('jsonwebtoken');
 var q = require('q');
 

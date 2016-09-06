@@ -3,7 +3,6 @@
 var userEntity = require('../../entities/User');
 var productUser = require('../../entities/ProductsUsers');
 var productEntity = require('../../entities/Product');
-var clone = require('clone');
 
 productEntity.belongsToMany(userEntity, {through: productUser, as: 'donorUser'});
 userEntity.belongsToMany(productEntity, {through: productUser, as: 'product'});

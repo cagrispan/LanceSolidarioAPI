@@ -1,6 +1,5 @@
 var UsersController = require('./../controllers/users/users.controller');
 var UsersMiddleware = require('./../middlewares/users.middleware');
-var TokenMiddleware = require('./../middlewares/token.middleware');
 var AuthController = require('./../controllers/auth/auth.controller');
 var AuthMiddleware = require('./../middlewares/auth.middleware');
 var ProductController = require('./../controllers/product/product.controller');
