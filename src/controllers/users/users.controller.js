@@ -46,10 +46,31 @@ function UsersController() {
 
     this.getSpecific = function (req, res) {
         var user = new User();
-        user.cpf = '1234';
-        user.get().then(function (data) {
-            console.log(data.dataValues);
+        user.facebookId = req.params.id;
+
+        var deferred = q.defer();
+
+        jwt.sign({id: user.facebookId}, 'banana', {algorithm: 'HS256'}, function (err, token) {
+            if (err) {
+                return res.send(500, {message: "JWT Integration Error"});
+            } else {
+                user.token = token;
+                return user.get().then(function (result) {
+                    if (result) {
+                        deferred.resolve();
+                        return res.send(200, result);
+                    } else {
+                        deferred.reject();
+                        return res.send(500);
+                    }
+                }, function (err) {
+                    deferred.reject();
+                    return res.send(500)
+                });
+            }
         });
+
+        return deferred.promise;
     };
 
     this.remove = function (req, res) {

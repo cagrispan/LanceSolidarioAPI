@@ -16,7 +16,7 @@ module.exports = function (server) {
 
     server.opts(/\/.*/g, function (req, res) {
         res.setHeader('Access-Control-Allow-Methods', 'PUT', 'POST');
-        res.setHeader('Access-Control-Allow-Headers', 'content-type');
+        res.setHeader('Access-Control-Allow-Headers', 'content-type, facebookid, token');
         res.setHeader('Access-Control-Allow-Origin', 'http://local.lancesolidario.com.br:8080');
         res.setHeader('Accept-Encoding', 'gzip, deflate, sdch');
         res.setHeader('Accept-Language', 'pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4');
@@ -24,9 +24,10 @@ module.exports = function (server) {
     });
 
     server.put('/users/:id', [authMiddleware.isLogged, usersMiddleware.hasAllInformation, usersController.addOrUpdate]);
+    server.get('/users/:id', [authMiddleware.isLogged, usersMiddleware.hasId, usersController.getSpecific]);
 
     server.post('/auth/:facebookId', authController.login);
 
-    server.post('/products', [productMiddleware.hasAllInformation,  productController.create]);
+    server.post('/products', [productMiddleware.hasAllInformation, productController.create]);
 
 };

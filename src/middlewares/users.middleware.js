@@ -15,6 +15,21 @@ function UsersMiddleware() {
 
 
     };
+
+    this.hasId = function (req, res, next) {
+
+        if (req.params) {
+            if (req.params.id) {
+                next();
+            } else {
+                res.send(404, {message: "parameters missing."})
+            }
+        } else {
+            res.send(404, {message: "parameters missing."})
+        }
+
+
+    };
 }
 UsersMiddleware.constructor = UsersMiddleware;
 module.exports = UsersMiddleware;

@@ -21,8 +21,36 @@ function UserFacade() {
 
     this.get = function () {
         var userFacade = this;
-
-        return userEntity.findOne({where: {facebookId: userFacade.facebookId}});
+        var user;
+        return userEntity.findOne({where: {facebookId: userFacade.facebookId}})
+            .then(function (resolution) {
+                user = resolution;
+                userFacade.facebookId = resolution.facebookId ;
+                userFacade.facebookToken = resolution.facebookToken ;
+                userFacade.name = resolution.name ;
+                userFacade.birthday = resolution.birthday ;
+                userFacade.email = resolution.email ;
+                return userFacade;
+            })
+            .then(function () {
+                return user.getAddresses();
+            })
+            .then(function (resolution) {
+                userFacade.address = resolution[0].dataValues;
+                return userFacade;
+            })
+            .then(function () {
+                return user.getContacts();
+            })
+            .then(function (resolution) {
+                var contact;
+                contact = resolution.pop();
+                userFacade.email = contact.dataValues.email;
+                userFacade.telephone = contact.dataValues.telephone;
+                return userFacade;
+            }).catch(function (err) {
+                console.log(err);
+            });
     };
 
     this.facebookLogin = function () {
@@ -56,12 +84,13 @@ function UserFacade() {
         return userEntity.findOrCreate({where: {facebookId: userFacade.facebookId}, defaults: userFacade})
             .spread(function (resolution) {
                 userToUpdate = resolution;
-            }).then(function () {
+            })
+            .then(function () {
                 return userToUpdate.getAddresses();
             })
             .then(function (existedAddress) {
                 if (existedAddress.length > 0) {
-                    addressEntity.destroy({where:{id: existedAddress[0].dataValues.id}, truncate: true});
+                    addressEntity.destroy({where: {id: existedAddress[0].dataValues.id}, truncate: true});
                     userToUpdate.removeAddress(existedAddress[0]);
                 }
                 return userToUpdate.createAddress(userFacade.address);
@@ -76,7 +105,7 @@ function UserFacade() {
             })
             .then(function (existedContact) {
                 if (existedContact.length > 0) {
-                    contactEntity.destroy({where:{id: existedContact[0].dataValues.id}, truncate: true});
+                    contactEntity.destroy({where: {id: existedContact[0].dataValues.id}, truncate: true});
                     userToUpdate.removeContact(existedContact[0]);
                 }
                 return userToUpdate.createContact({telephone: userFacade.telephone, email: userFacade.email});
