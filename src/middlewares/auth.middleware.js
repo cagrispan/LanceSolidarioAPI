@@ -4,15 +4,15 @@ var jwt = require('jsonwebtoken');
 function AuthMiddleware() {
 
     this.isLogged = function (req, res, next) {
-        if(req.body.token) {
-            var decoded = jwt.verify(req.body.token, 'banana');
-             if (decoded.id == req.body.facebookId) {
-                 return next();
-             } else {
-                 return res.send(401);
-             }
+        if (req.headers.token) {
+            var decoded = jwt.verify(req.headers.token, 'banana');
+            if (decoded.id == req.headers.facebookid) {
+                return next();
+            } else {
+                return res.send(401, {'code': 'Unauthorized', 'message': 'Unauthorized. Invalid token.'});
+            }
         } else {
-            return res.send(401);
+            return res.send(401, {'message': 'Unauthorized. Missing token.'});
         }
 
     };
