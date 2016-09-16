@@ -12,17 +12,14 @@ var sequelize = new Sequelize(
     }
 );
 
-module.exports = sequelize.define('contact', {
-    id: {
+module.exports = sequelize.define('emails', {
+    emailId: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
     },
     email: {
-        type: Sequelize.STRING
-    },
-    telephone: {
         type: Sequelize.STRING
     },
     userId: {
