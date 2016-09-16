@@ -12,14 +12,14 @@ var sequelize = new Sequelize(
     }
 );
 
-module.exports = sequelize.define('product', {
-    id: {
+module.exports = sequelize.define('products', {
+    productId: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
     },
-    buyerUser:{
+    userId:{
         type: Sequelize.INTEGER
     },
     title: {
@@ -28,20 +28,11 @@ module.exports = sequelize.define('product', {
     description: {
         type: Sequelize.STRING
     },
-    category: {
-        type: Sequelize.STRING
-    },
-    tags: {
-        type: Sequelize.STRING
-    },
     isUsed: {
         type: Sequelize.BOOLEAN
     },
-    images: {
-        type: Sequelize.STRING
-    },
-    auctions: {
-        type: Sequelize.STRING
+    isDeleted: {
+        type: Sequelize.BOOLEAN
     }
 });
 
