@@ -2,6 +2,7 @@
 
 var Sequelize = require('sequelize');
 var config = require('../../config/env.config.js');
+
 var sequelize = new Sequelize(
     config.db.name,
     config.db.user,
@@ -13,7 +14,7 @@ var sequelize = new Sequelize(
 );
 
 module.exports = sequelize.define('user', {
-    id: {
+    userId: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
@@ -26,8 +27,7 @@ module.exports = sequelize.define('user', {
     },
     facebookToken: {
         type: Sequelize.STRING,
-        allowNull: false,
-        unique: true
+        allowNull: false
     },
     token: {
         type: Sequelize.STRING,
@@ -38,8 +38,7 @@ module.exports = sequelize.define('user', {
         allowNull: false
     },
     birthday: {
-        type: Sequelize.DATE,
-        allowNull: false
+        type: Sequelize.DATE
     }
 });
 
