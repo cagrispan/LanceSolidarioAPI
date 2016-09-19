@@ -13,6 +13,10 @@ function readAll(userId) {
     return productEntity.findAll({where:{userId: userId}});
 }
 
+function readOne(productId) {
+    return productEntity.findOne({where:{productId: productId}});
+}
+
 function update(product) {
     return productEntity.update(product, {where: {productId: product.productId}});
 }
@@ -20,7 +24,8 @@ function update(product) {
 ProductEntityFacade.prototype = {
     create: create,
     readAll: readAll,
-    update: update
+    update: update,
+    readOne: readOne
 };
 
 var productEntityFacade = new ProductEntityFacade();
