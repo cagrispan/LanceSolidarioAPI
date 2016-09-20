@@ -1,8 +1,5 @@
 'use strict';
 var TelephoneFacade = require('../../models/facades/TelephonesFacade');
-var config = require('../../config/env.config.js');
-var jwt = require('jsonwebtoken');
-var q = require('q');
 
 function TelephonesController() {
 

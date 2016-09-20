@@ -1,6 +1,5 @@
 'use strict';
 var PurchaseFacade = require('../../models/facades/PurchasesFacade');
-var config = require('../../config/env.config.js');
 
 function PurchasesController() {
 

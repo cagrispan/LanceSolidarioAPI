@@ -1,8 +1,6 @@
 'use strict';
 var UserFacade = require('../../models/facades/UsersFacade');
-var config = require('../../config/env.config.js');
 var jwt = require('jsonwebtoken');
-var q = require('q');
 
 function UsersController() {
 
@@ -42,7 +40,7 @@ function UsersController() {
                 return res.send(500, {message: err});
             });
 
-    }
+    };
 
 }
 

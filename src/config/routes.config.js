@@ -1,3 +1,5 @@
+'use strict';
+
 var AuthController = require('./../controllers/auth/auth.controller');
 var AuthMiddleware = require('./../middlewares/auth.middleware');
 var authController = new AuthController();

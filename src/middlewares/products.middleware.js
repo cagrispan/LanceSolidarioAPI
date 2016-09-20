@@ -9,10 +9,10 @@ function ProductsMiddleware() {
                 req.body.description) {
                 next();
             } else {
-                res.send(404, {message: "Parameters missing.", receivedObject: req.body });
+                res.send(404, {message: 'Parameters missing.', receivedObject: req.body });
             }
         } else {
-            res.send(404, {message: "Parameters missing."});
+            res.send(404, {message: 'Parameters missing.'});
         }
 
     };
@@ -23,10 +23,10 @@ function ProductsMiddleware() {
             if (req.params.productId) {
                 next();
             } else {
-                res.send(404, {message: "Parameters missing."});
+                res.send(404, {message: 'Parameters missing.'});
             }
         } else {
-            res.send(404, {message: "Parameters missing."});
+            res.send(404, {message: 'Parameters missing.'});
         }
 
     };

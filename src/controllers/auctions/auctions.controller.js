@@ -1,7 +1,6 @@
 'use strict';
 var AuctionFacade = require('../../models/facades/AuctionsFacade');
 var ProductFacade = require('../../models/facades/ProductsFacade');
-var config = require('../../config/env.config.js');
 
 function AuctionsController() {
 
@@ -126,7 +125,7 @@ function AuctionsController() {
                 function (err) {
                     return res.send(500, err);
             });
-    }
+    };
 
 }
 

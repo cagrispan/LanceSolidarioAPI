@@ -13,10 +13,10 @@ function AddressesMiddleware() {
                 req.body.state) {
                 next();
             } else {
-                res.send(404, {message: "Parameters missing."});
+                res.send(404, {message: 'Parameters missing.'});
             }
         } else {
-            res.send(404, {message: "Parameters missing."});
+            res.send(404, {message: 'Parameters missing.'});
         }
 
     };
@@ -27,10 +27,10 @@ function AddressesMiddleware() {
             if (req.params.addressId) {
                 next();
             } else {
-                res.send(404, {message: "Parameters missing."});
+                res.send(404, {message: 'Parameters missing.'});
             }
         } else {
-            res.send(404, {message: "Parameters missing."});
+            res.send(404, {message: 'Parameters missing.'});
         }
 
     };

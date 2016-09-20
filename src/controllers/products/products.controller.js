@@ -1,8 +1,5 @@
 'use strict';
 var ProductFacade = require('../../models/facades/ProductsFacade');
-var config = require('../../config/env.config.js');
-var jwt = require('jsonwebtoken');
-var q = require('q');
 
 function ProductsController() {
 
