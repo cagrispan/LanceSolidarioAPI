@@ -12,27 +12,18 @@ var sequelize = new Sequelize(
     }
 );
 
-module.exports = sequelize.define('products', {
-    productId: {
+module.exports = sequelize.define('telephones', {
+    telephoneId: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
     },
-    userId:{
+    telephone: {
+        type: Sequelize.STRING
+    },
+    userId: {
         type: Sequelize.INTEGER
-    },
-    title: {
-        type: Sequelize.STRING
-    },
-    description: {
-        type: Sequelize.STRING
-    },
-    isUsed: {
-        type: Sequelize.BOOLEAN
-    },
-    isDeleted: {
-        type: Sequelize.BOOLEAN
     }
 });
 

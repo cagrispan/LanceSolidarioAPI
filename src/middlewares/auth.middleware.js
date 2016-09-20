@@ -6,13 +6,13 @@ function AuthMiddleware() {
     this.isLogged = function (req, res, next) {
         if (req.headers.token) {
             var decoded = jwt.verify(req.headers.token, 'banana');
-            if (decoded.id == req.headers.facebookid) {
+            if (decoded.id == req.params.facebookId) {
                 return next();
             } else {
                 return res.send(401, {'code': 'Unauthorized', 'message': 'Unauthorized. Invalid token.'});
             }
         } else {
-            return res.send(401, {'message': 'Unauthorized. Missing token.'});
+            return res.send(401, {'code': 'Unauthorized', 'message': 'Unauthorized. Missing token.'});
         }
 
     };

@@ -12,24 +12,24 @@ var sequelize = new Sequelize(
     }
 );
 
-module.exports = sequelize.define('products', {
-    productId: {
+module.exports = sequelize.define('bids', {
+    bidId: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
     },
-    userId:{
+    auctionId:{
         type: Sequelize.INTEGER
     },
-    title: {
-        type: Sequelize.STRING
+    userId: {
+        type: Sequelize.INTEGER
     },
-    description: {
-        type: Sequelize.STRING
+    bid : {
+        type: Sequelize.DOUBLE
     },
-    isUsed: {
-        type: Sequelize.BOOLEAN
+    date: {
+        type: Sequelize.DATE
     },
     isDeleted: {
         type: Sequelize.BOOLEAN

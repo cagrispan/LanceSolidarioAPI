@@ -12,27 +12,27 @@ var sequelize = new Sequelize(
     }
 );
 
-module.exports = sequelize.define('products', {
-    productId: {
+module.exports = sequelize.define('purchases', {
+    purchaseId: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
     },
-    userId:{
+    auctionId:{
         type: Sequelize.INTEGER
     },
-    title: {
-        type: Sequelize.STRING
+    productId: {
+        type: Sequelize.INTEGER
     },
-    description: {
-        type: Sequelize.STRING
+    paymentId: {
+        type: Sequelize.INTEGER
     },
-    isUsed: {
-        type: Sequelize.BOOLEAN
+    deliveryId: {
+        type: Sequelize.INTEGER
     },
-    isDeleted: {
-        type: Sequelize.BOOLEAN
+    userId: {
+        type: Sequelize.INTEGER
     }
 });
 

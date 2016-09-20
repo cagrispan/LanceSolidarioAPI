@@ -1,22 +1,24 @@
 'use strict';
-var User  = require('../../models/facades/Users/UsersFacade');
+var UserFacade = require('../../models/facades/UsersFacade');
+var jwt = require('jsonwebtoken');
 
 function AuthController() {
-    this.get = function (req, res) {
 
-    };
+    this.login = function (req, res) {
 
-    this.login = function(req, res) {
-        var user = new User();
-        user.facebookId = req.params.facebookId;
+        var user =  req.body;
         user.birthday = new Date(req.body.birthday);
-        user.name = req.body.name;
-        user.facebookToken = req.body.facebookToken;
+        user.token = jwt.sign({id: user.facebookId}, 'banana', {algorithm: 'HS256'});
 
-        return user.facebookLogin().then(function(resolution) {
-            return res.send(200, {token: resolution.dataValues.token});
-        });
+        return UserFacade.findOrCreate(user)
+            .spread(function (resolution) {
+                return res.send(201, {token: resolution.dataValues.token});
+            }, function (err) {
+                return res.send(500, {message: err});
+            });
+
     };
+
 }
 
 AuthController.constructor = AuthController;

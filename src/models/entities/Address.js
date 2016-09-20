@@ -12,12 +12,15 @@ var sequelize = new Sequelize(
     }
 );
 
-module.exports = sequelize.define('address', {
-    id: {
+module.exports = sequelize.define('addresses', {
+    addressId: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
+    },
+    userId:{
+        type: Sequelize.INTEGER
     },
     street: {
         type: Sequelize.STRING
@@ -35,6 +38,9 @@ module.exports = sequelize.define('address', {
         type: Sequelize.STRING
     },
     state: {
+        type: Sequelize.STRING
+    },
+    cep: {
         type: Sequelize.STRING
     }
 });

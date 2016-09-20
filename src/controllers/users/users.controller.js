@@ -1,85 +1,49 @@
 'use strict';
-var User = require('../../models/facades/Users/UsersFacade');
+var UserFacade = require('../../models/facades/UsersFacade');
 var config = require('../../config/env.config.js');
 var jwt = require('jsonwebtoken');
 var q = require('q');
 
 function UsersController() {
+
     this.get = function (req, res) {
+
+        var user = {};
+
+        user.facebookId = req.params.facebookId;
+
+        return UserFacade.read(user.facebookId)
+            .then(
+                function (result) {
+
+                    delete result.dataValues.userId;
+                    delete result.dataValues.token;
+                    delete result.dataValues.createdAt;
+                    delete result.dataValues.updatedAt;
+
+                    return res.send(200, result.dataValues);
+                },
+                function (err) {
+                    return res.send(500, err);
+                });
+
     };
 
-    this.addOrUpdate = function (req, res) {
-        var user = new User();
-        user.facebookId = req.params.id;
-        user.email = req.body.email;
-        user.telephone = req.body.telephone;
-        user.address = req.body.address;
+    this.update = function(req, res){
+
+        var user =  req.body;
         user.birthday = new Date(req.body.birthday);
-        user.name = req.body.name;
-        user.facebookToken = req.body.facebookToken;
+        user.token = jwt.sign({id: user.facebookId}, 'banana', {algorithm: 'HS256'});
 
-        var deferred = q.defer();
+        return UserFacade.update(user)
+            .spread(function () {
+                return res.send(204);
+            }, function (err) {
+                return res.send(500, {message: err});
+            });
 
-        jwt.sign({id: user.facebookId}, 'banana', {algorithm: 'HS256'}, function (err, token) {
-            if (err) {
-                return res.send(500, {message: "JWT Integration Error"});
-            } else {
-                user.token = token;
-                return user.createOrUpdate().then(function (result) {
-                    if (result.dataValues.id) {
-                        deferred.resolve();
-                        return res.send(200);
-                    } else {
-                        deferred.reject();
-                        return res.send(500);
-                    }
-                }, function (err) {
-                    deferred.reject();
-                    return res.send(500)
-                });
-            }
-        });
+    }
 
-        return deferred.promise;
-
-    };
-
-    this.getSpecific = function (req, res) {
-        var user = new User();
-        user.facebookId = req.params.id;
-
-        var deferred = q.defer();
-
-        jwt.sign({id: user.facebookId}, 'banana', {algorithm: 'HS256'}, function (err, token) {
-            if (err) {
-                return res.send(500, {message: "JWT Integration Error"});
-            } else {
-                user.token = token;
-                return user.get().then(function (result) {
-                    if (result) {
-                        deferred.resolve();
-                        return res.send(200, result);
-                    } else {
-                        deferred.reject();
-                        return res.send(500);
-                    }
-                }, function (err) {
-                    deferred.reject();
-                    return res.send(500)
-                });
-            }
-        });
-
-        return deferred.promise;
-    };
-
-    this.remove = function (req, res) {
-        var user = new User();
-        user.cpf = '1234';
-        user.destroy().then(function (data) {
-            console.log('deu');
-        });
-    };
 }
 
 UsersController.constructor = UsersController;
