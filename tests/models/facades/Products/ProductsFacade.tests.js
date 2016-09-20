@@ -18,7 +18,7 @@ describe('ProductsFacade Tests', function () {
 
         let product = {
             title: 'titleTest',
-            userId: 'userIdTest',
+            userId: 9999,
             description: 'descriptionTest',
             isUsed: true,
             isDeleted: false
@@ -42,7 +42,7 @@ describe('ProductsFacade Tests', function () {
 
     it('readAll() should retrieve all products from database', function (done) {
 
-        let userId = 'userIdTest';
+        let userId = 9999;
 
         productsFacade.readAll(userId).then((resolution) => {
             expect(resolution[0].dataValues.title).to.equal('titleTest');
