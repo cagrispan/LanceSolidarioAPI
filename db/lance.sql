@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 16-Set-2016 às 18:09
+-- Generation Time: 20-Set-2016 às 18:09
 -- Versão do servidor: 5.7.11
 -- PHP Version: 5.6.19
 
@@ -46,6 +46,57 @@ CREATE TABLE `addresses` (
 
 INSERT INTO `addresses` (`addressId`, `userId`, `street`, `number`, `complement`, `neighborhood`, `city`, `state`, `cep`, `createdAt`, `updatedAt`) VALUES
 (9, 123456, 'Rua Izaac Ferreira da Cruz', '332', 'Ap 401', 'Pinheirinho', 'Curitiba', 'Paraná', 81870000, '2016-09-16 14:20:05', '2016-09-16 14:20:05');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `auctions`
+--
+
+CREATE TABLE `auctions` (
+  `auctionId` int(11) NOT NULL,
+  `productId` int(11) NOT NULL,
+  `institutionId` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `minimumBid` double DEFAULT NULL,
+  `startDate` datetime NOT NULL,
+  `endDate` datetime NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `auctions`
+--
+
+INSERT INTO `auctions` (`auctionId`, `productId`, `institutionId`, `userId`, `minimumBid`, `startDate`, `endDate`, `createdAt`, `updatedAt`) VALUES
+(1, 1, 1, 123456, 10.25, '1987-10-10 03:00:00', '1997-10-10 03:00:00', '2016-09-19 05:31:31', '2016-09-19 05:33:40');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `bids`
+--
+
+CREATE TABLE `bids` (
+  `bidId` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `auctionId` int(11) NOT NULL,
+  `bid` double NOT NULL,
+  `date` datetime NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  `isDeleted` tinyint(1) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `bids`
+--
+
+INSERT INTO `bids` (`bidId`, `userId`, `auctionId`, `bid`, `date`, `createdAt`, `updatedAt`, `isDeleted`) VALUES
+(1, 123456, 1, 56.1, '2016-09-19 06:15:44', '2016-09-19 06:15:44', '2016-09-19 06:15:44', 0),
+(2, 123456, 1, 57.2, '2016-09-19 06:56:16', '2016-09-19 06:56:16', '2016-09-19 07:05:29', 1),
+(3, 123456, 1, 58.2, '2016-09-19 07:04:42', '2016-09-19 07:04:42', '2016-09-19 07:04:42', 0);
 
 -- --------------------------------------------------------
 
@@ -93,6 +144,30 @@ INSERT INTO `products` (`productId`, `userId`, `title`, `description`, `isUsed`,
 (1, '123456', 'Título', 'Descrição', 0, 0, '2016-09-16 17:29:42', '2016-09-16 17:29:42'),
 (2, '123456', 'Título', 'Descrição', 1, 0, '2016-09-16 17:30:00', '2016-09-16 17:30:00'),
 (3, '123456', 'Título', 'Descrição Modificada', 1, 1, '2016-09-16 17:30:07', '2016-09-16 17:30:37');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `purchases`
+--
+
+CREATE TABLE `purchases` (
+  `purchaseId` int(11) NOT NULL,
+  `productId` int(11) NOT NULL,
+  `auctionId` int(11) NOT NULL,
+  `paymentId` int(11) NOT NULL,
+  `deliveryId` int(11) NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  `userId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `purchases`
+--
+
+INSERT INTO `purchases` (`purchaseId`, `productId`, `auctionId`, `paymentId`, `deliveryId`, `createdAt`, `updatedAt`, `userId`) VALUES
+(1, 1, 1, 2, 1, '2016-09-19 08:21:29', '2016-09-19 08:22:00', 123456);
 
 -- --------------------------------------------------------
 
@@ -155,6 +230,18 @@ ALTER TABLE `addresses`
   ADD PRIMARY KEY (`addressId`);
 
 --
+-- Indexes for table `auctions`
+--
+ALTER TABLE `auctions`
+  ADD PRIMARY KEY (`auctionId`);
+
+--
+-- Indexes for table `bids`
+--
+ALTER TABLE `bids`
+  ADD PRIMARY KEY (`bidId`);
+
+--
 -- Indexes for table `emails`
 --
 ALTER TABLE `emails`
@@ -165,6 +252,12 @@ ALTER TABLE `emails`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`productId`);
+
+--
+-- Indexes for table `purchases`
+--
+ALTER TABLE `purchases`
+  ADD PRIMARY KEY (`purchaseId`);
 
 --
 -- Indexes for table `telephones`
@@ -190,6 +283,16 @@ ALTER TABLE `users`
 ALTER TABLE `addresses`
   MODIFY `addressId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
+-- AUTO_INCREMENT for table `auctions`
+--
+ALTER TABLE `auctions`
+  MODIFY `auctionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `bids`
+--
+ALTER TABLE `bids`
+  MODIFY `bidId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
 -- AUTO_INCREMENT for table `emails`
 --
 ALTER TABLE `emails`
@@ -199,6 +302,11 @@ ALTER TABLE `emails`
 --
 ALTER TABLE `products`
   MODIFY `productId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `purchases`
+--
+ALTER TABLE `purchases`
+  MODIFY `purchaseId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `telephones`
 --
