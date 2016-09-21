@@ -23,7 +23,7 @@ module.exports = sequelize.define('bids', {
         type: Sequelize.INTEGER
     },
     userId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
     },
     bid : {
         type: Sequelize.DOUBLE

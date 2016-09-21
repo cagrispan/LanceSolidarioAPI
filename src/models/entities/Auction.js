@@ -26,7 +26,7 @@ module.exports = sequelize.define('auctions', {
         type: Sequelize.INTEGER
     },
     userId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
     },
     minimumBid : {
         type: Sequelize.DOUBLE

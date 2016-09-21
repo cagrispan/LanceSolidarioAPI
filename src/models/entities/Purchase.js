@@ -32,7 +32,7 @@ module.exports = sequelize.define('purchases', {
         type: Sequelize.INTEGER
     },
     userId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
     }
 });
 
