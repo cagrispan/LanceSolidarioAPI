@@ -1,9 +1,7 @@
 var sinon = require("sinon");
 
 exports.sign = sinon.spy(function (id, word, alg, callback) {
-    if (id && word && alg && callback) {
-        callback(null, 'tokenTest');
-    }
+    return 'tokenTest';
 });
 
 exports.verify = sinon.spy(function (token, word) {
