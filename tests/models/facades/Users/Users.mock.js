@@ -2,13 +2,19 @@ var q = require("q");
 var sinon = require("sinon");
 
 function UserMock() {
-    this.findOrCreate = sinon.spy(function (user) {
-        return q.when({dataValues: {token: 'tokenTest'}});
-    });
-
-    this.facebookLogin = sinon.spy(function () {
-        return q.when({dataValues: {token: 1}});
-    });
 }
 
-module.exports = UserMock;
+function findOrCreate() {
+    return {
+        spread: function (fn) {
+            fn({dataValues: {token: 'test'}});
+            return q.when();
+        }
+    };
+}
+
+UserMock.prototype = {
+    findOrCreate: findOrCreate
+};
+
+module.exports = new UserMock();

@@ -4,7 +4,7 @@ var proxyquire = require("proxyquire");
 var UserMock = require('./../../models/facades/Users/Users.mock');
 var jwtMock = require('./../jwt.mock');
 var AuthController = proxyquire('../../../src/controllers/auth/auth.controller.js',
-    {'../../models/facades/Users/UsersFacade': UserMock,
+    {'../../models/facades/UsersFacade': UserMock,
     'jsonwebtoken' : jwtMock});
 var sinon = require('sinon');
 
