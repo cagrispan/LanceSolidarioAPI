@@ -39,6 +39,7 @@ function ProductsController() {
 
         var product = req.body;
         product.userId = req.params.facebookId;
+        product.isDeleted = false;
 
         return ProductFacade.create(product)
             .then(function (result) {

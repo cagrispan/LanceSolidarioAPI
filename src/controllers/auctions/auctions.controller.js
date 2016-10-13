@@ -53,6 +53,42 @@ function AuctionsController() {
 
     };
 
+    this.getAllByProduct = function (req, res) {
+
+        var auction = {};
+
+        auction.userId = req.params.facebookId;
+        auction.productId = req.params.productId;
+
+        return AuctionFacade.readAllByProduct(auction.userId, auction.productId)
+            .then(
+                function (result) {
+
+                    var response = {};
+                    var i;
+
+                    response.auctions = [];
+
+                    response.facebookId = auction.userId;
+                    response.productId = auction.productId;
+
+                    for (i = 0; i < result.length; i++) {
+
+                        delete result[i].dataValues.userId;
+                        delete result[i].dataValues.createdAt;
+                        delete result[i].dataValues.updatedAt;
+
+                        response.auctions.push(result[i].dataValues);
+                    }
+
+                    return res.send(200, response);
+                },
+                function (err) {
+                    return res.send(500, err);
+                });
+
+    };
+
     this.getOne = function (req, res) {
 
         var auction = {};
@@ -115,16 +151,16 @@ function AuctionsController() {
             })
             .then(function (result) {
 
-                delete result.dataValues.createdAt;
-                delete result.dataValues.updatedAt;
+                    delete result.dataValues.createdAt;
+                    delete result.dataValues.updatedAt;
 
-                auction.products = result.dataValues;
+                    auction.products = result.dataValues;
 
-                return res.send(200, auction);
-            },
+                    return res.send(200, auction);
+                },
                 function (err) {
                     return res.send(500, err);
-            });
+                });
     };
 
 }

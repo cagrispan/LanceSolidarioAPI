@@ -99,6 +99,11 @@ module.exports = function (server) {
     server.put('/users/:facebookId/products/:productId', [authMiddleware.isLogged, productsMiddleware.hasId, productsMiddleware.hasAllInformation, productsController.update]);
 
     /*
+     User Product Auctions
+     */
+    server.get('/users/:facebookId/products/:productId/auctions', [authMiddleware.isLogged, auctionsController.getAllByProduct]);
+
+    /*
      User Auctions
      */
     server.get('/users/:facebookId/auctions', [authMiddleware.isLogged, auctionsController.getAll]);
