@@ -6,9 +6,7 @@ function AuctionsMiddleware() {
         if (req.body && req.params) {
             if (req.params.facebookId &&
                 req.body.productId &&
-                req.body.auctionId &&
-                req.body.paymentId &&
-                req.body.deliveryId) {
+                req.body.auctionId) {
                 next();
             } else {
                 res.send(404, {message: 'Parameters missing.', receivedObject: req.body });

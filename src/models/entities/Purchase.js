@@ -33,6 +33,19 @@ module.exports = sequelize.define('purchases', {
     },
     userId: {
         type: Sequelize.STRING
+    },
+    redirectUrl: {
+        type: Sequelize.STRING
+    },
+    reviewUrl: {
+        type: Sequelize.STRING
+    },
+    reference: {
+        type: Sequelize.STRING
+    },
+    currency: {
+        type: Sequelize.STRING
     }
+
 });
 
