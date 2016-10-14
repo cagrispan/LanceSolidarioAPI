@@ -2,8 +2,8 @@
 
 var globalConf = require('./env.config');
 
-var sandbox = globalConf.pagseguroConf.env === 'dev' ? 'sandbox.' : '';
-var sandboxPath = globalConf.pagseguroConf.env === 'dev' ? 'sandbox/' : '';
+var sandbox = globalConf.pagseguroConf.env !== 'prod' ? 'sandbox.' : '';
+var sandboxPath = globalConf.pagseguroConf.env !== 'prod' ? 'sandbox/' : '';
 var email = globalConf.pagseguroConf.email;
 var token = globalConf.pagseguroConf.token;
 
@@ -19,7 +19,8 @@ module.exports = {
         "createPaymentRequest": "https://ws." + sandbox + "pagseguro.uol.com.br/v2/checkout" + authentication,
         "redirectPayment": "https://" + sandbox + "pagseguro.uol.com.br/v2/checkout/payment.html?code=",
         "querySubscriptionByDays": "https://ws." + sandbox + "pagseguro.uol.com.br/v2/pre-approvals/notifications" + authentication + "&interval=",
-        "queryTransactionsBetweenDates": "https://ws." + sandbox + "pagseguro.uol.com.br/v2/transactions" + authentication
+        "queryTransactionsBetweenDates": "https://ws." + sandbox + "pagseguro.uol.com.br/v2/transactions" + authentication,
+        "authentication": authentication
     },
     "type": {
         "PRE_APPROVAL": "preApproval",
