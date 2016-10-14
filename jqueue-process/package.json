@@ -1,0 +1,21 @@
+{
+  "name": "@tunts/transaction-update",
+  "version": "1.0.3",
+  "description": "",
+  "main": "app/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@tunts/jqueue-microservice": "^0.2.9",
+    "@tunts/query-util": "^1.0.0",
+    "bunyan": "^1.8.1",
+    "bunyan-elasticsearch": "^1.0.0",
+    "q": "^1.4.1",
+    "request-promise": "^3.0.0",
+    "sync-request": "^3.0.1",
+    "uuid": "^2.0.2"
+  }
+}
