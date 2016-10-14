@@ -1,12 +1,13 @@
 
 
 function decodeUriToNotificationObject(req, res, next){
-    var params = JSON.parse('{"' + decodeURI(req.body.replace(/&/g, "\",\"").replace(/=/g,"\":\"")) + '"}');
+    console.log(req.headers);
+    var params = req.headers;
 
-    if(params && params.notificationCode && params.notificationType){
+    if(params && params.notificationcode && params.notificationtype){
         req.notification = {
-            code : params.notificationCode,
-            type : params.notificationType
+            code : params.notificationcode,
+            type : params.notificationtype
         };
     }else{
         req.notification = {
