@@ -17,10 +17,15 @@ function update(purchase) {
     return purchaseEntity.update(purchase, {where: {purchaseId: purchase.purchaseId}});
 }
 
+function getByReference(reference) {
+    return purchaseEntity.findOne({where: {reference: reference}});
+}
+
 PurchaseEntityFacade.prototype = {
     create: create,
     readAll: readAll,
-    update: update
+    update: update,
+    getByReference: getByReference
 };
 
 var purchaseEntityFacade = new PurchaseEntityFacade();

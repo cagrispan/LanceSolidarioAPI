@@ -27,11 +27,16 @@ function update(user) {
     return userEntity.update(user, {where: {facebookId: user.facebookId}});
 }
 
+function findOne(facebookId) {
+    return userEntity.findOne({where: {facebookId: facebookId}});
+}
+
 
 UserEntityFacade.prototype = {
     findOrCreate: findOrCreate,
     read: read,
-    update: update
+    update: update,
+    findOne: findOne
 };
 
 var userEntityFacade = new UserEntityFacade();
