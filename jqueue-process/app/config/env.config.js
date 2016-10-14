@@ -10,7 +10,7 @@ var json = {
             "limit": 10
         },
         "inputQueue": "notification_code",
-        "outputQueue": null,
+        "outputQueue": "",
         "touchTime": 1000,
         "transientErrorDelay": 60
     }
