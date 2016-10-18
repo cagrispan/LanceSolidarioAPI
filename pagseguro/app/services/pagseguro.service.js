@@ -25,24 +25,10 @@ function getTransaction(code) {
     return req(generateOptions(GET, pagseguroConfig.url.verifyTransaction + code + pagseguroConfig.url.authentication));
 }
 
-function cancelSubscription(code) {
-    return req(generateOptions(GET, pagseguroConfig.url.cancelSubscription + code + pagseguroConfig.url.authentication));
-}
-
-function createPreApprovalRequest(preApprovalRequestModel) {
-    var builder = new xml2js.Builder({rootName: 'preApprovalRequest'});
-    var preApprovalXML = builder.buildObject(preApprovalRequestModel);
-    return req(generateOptions(POST, pagseguroConfig.url.createPreRequest, preApprovalXML));
-}
-
 function createPaymentRequest(paymentModel) {
     var builder = new xml2js.Builder({rootName: 'checkout'});
     var prePaymentXML = builder.buildObject(paymentModel);
     return req(generateOptions(POST, pagseguroConfig.url.createPaymentRequest, prePaymentXML));
-}
-
-function getSubscriptionsByDayInterval(daysInterval) {
-    return req(generateOptions(GET, pagseguroConfig.url.querySubscriptionByDays + daysInterval));
 }
 
 function getTransactionsBetweenDates(initialDate, finalDate, page, maxPageResults){
@@ -54,10 +40,6 @@ function getTransactionsBetweenDates(initialDate, finalDate, page, maxPageResult
     return req(generateOptions(GET, url));
 }
 
-exports.createPreApprovalRequest = createPreApprovalRequest;
-exports.getPreApproval = getPreApproval;
-exports.cancelSubscription = cancelSubscription;
 exports.getTransaction = getTransaction;
 exports.createPaymentRequest = createPaymentRequest;
-exports.getSubscriptionsByDayInterval = getSubscriptionsByDayInterval;
 exports.getTransactionsBetweenDates = getTransactionsBetweenDates;

@@ -4,7 +4,6 @@ var PaymentDAO = require('../daos/payment.dao'),
 
 function Payment() {
 
-    
     var self = this;
     self.code = null;
     self.email = null;

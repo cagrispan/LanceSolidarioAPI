@@ -1,7 +1,6 @@
 
 
 function decodeUriToNotificationObject(req, res, next){
-    console.log(req.headers);
     var params = req.headers;
 
     if(params && params.notificationcode && params.notificationtype){
