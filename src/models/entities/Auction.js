@@ -36,6 +36,9 @@ module.exports = sequelize.define('auctions', {
     },
     endDate: {
         type: Sequelize.DATE
+    },
+    isClosed: {
+        type: Sequelize.BOOLEAN
     }
 });
 

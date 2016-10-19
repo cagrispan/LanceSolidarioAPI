@@ -36,6 +36,20 @@ function AuctionsController() {
 
                         for (i = 0; i < result.length; i++) {
 
+                            let startTime = new Date(result[i].dataValues.startDate);
+                            let endTime = new Date(result[i].dataValues.endDate);
+                            let currentDate = new Date();
+
+                            if(result.dataValues.isClosed) {
+                                result[i].dataValues.status = "closed";
+                            } else if(currentDate > startTime && currentDate < endTime) {
+                                result[i].dataValues.status = "actived";
+                            } else if(currentDate < startTime){
+                                result[i].dataValues.status = "pending";
+                            } else if(currentDate > endTime) {
+                                result[i].dataValues.status = "finished";
+                            }
+
                             delete result[i].dataValues.createdAt;
                             delete result[i].dataValues.updatedAt;
 
@@ -74,6 +88,20 @@ function AuctionsController() {
 
                     for (i = 0; i < result.length; i++) {
 
+                        let startTime = new Date(result[i].dataValues.startDate);
+                        let endTime = new Date(result[i].dataValues.endDate);
+                        let currentDate = new Date();
+
+                        if(result.dataValues.isClosed) {
+                            result[i].dataValues.status = "closed";
+                        } else if(currentDate > startTime && currentDate < endTime) {
+                            result[i].dataValues.status = "actived";
+                        } else if(currentDate < startTime){
+                            result[i].dataValues.status = "pending";
+                        } else if(currentDate > endTime) {
+                            result[i].dataValues.status = "finished";
+                        }
+
                         delete result[i].dataValues.userId;
                         delete result[i].dataValues.createdAt;
                         delete result[i].dataValues.updatedAt;
@@ -95,10 +123,22 @@ function AuctionsController() {
 
         auction.auctionId = req.params.auctionId;
 
-        return AuctionFacade.readOne(auction.auctio)
+        return AuctionFacade.readOne(auction.auctionId)
             .then(
                 function (result) {
+                    let startTime = new Date(result.dataValues.startDate);
+                    let endTime = new Date(result.dataValues.endDate);
+                    let currentDate = new Date();
 
+                    if(result.dataValues.isClosed) {
+                        result.dataValues.status = "closed";
+                    } else if(currentDate > startTime && currentDate < endTime) {
+                        result.dataValues.status = "actived";
+                    } else if(currentDate < startTime){
+                        result.dataValues.status = "pending";
+                    } else if(currentDate > endTime) {
+                        result.dataValues.status = "finished";
+                    }
                     delete result.dataValues.createdAt;
                     delete result.dataValues.updatedAt;
 
