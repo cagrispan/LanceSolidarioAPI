@@ -45,6 +45,9 @@ var PurchasesMiddleware = require('./../middlewares/purchases.middleware');
 var purchasesController = new PurchasesController();
 var purchasesMiddleware = new PurchasesMiddleware();
 
+var ImagesController = require('./../controllers/products/images.controller');
+var imagesController = new ImagesController();
+
 
 
 module.exports = function (server) {
@@ -132,4 +135,11 @@ module.exports = function (server) {
      Auction Product
      */
     server.get('/auctions/:auctionId/products', [auctionsController.getProducts]);
+
+    /*
+    Images
+     */
+    server.post('/users/:facebookId/products/:productId/images', [authMiddleware.isLogged, imagesController.add]);
+    server.get('/users/:facebookId/products/:productId/images', [authMiddleware.isLogged, imagesController.get]);
+    server.del('/users/:facebookId/products/images/:imageId', [authMiddleware.isLogged, imagesController.remove]);
 };

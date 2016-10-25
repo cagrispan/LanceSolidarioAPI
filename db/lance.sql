@@ -138,6 +138,33 @@ INSERT INTO `emails` VALUES (1,'123456','cagrispan@gmail.com','2016-09-16 15:46:
 UNLOCK TABLES;
 
 --
+-- Table structure for table `images`
+--
+
+DROP TABLE IF EXISTS `images`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `images` (
+  `imageId` int(11) NOT NULL AUTO_INCREMENT,
+  `productId` int(11) NOT NULL,
+  `base64` varchar(250) DEFAULT NULL,
+  `createdAt` datetime DEFAULT NULL,
+  `updatedAt` datetime DEFAULT NULL,
+  PRIMARY KEY (`imageId`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `images`
+--
+
+LOCK TABLES `images` WRITE;
+/*!40000 ALTER TABLE `images` DISABLE KEYS */;
+INSERT INTO `images` VALUES (1,1,'test','2016-10-25 16:46:40','2016-10-25 16:46:40');
+/*!40000 ALTER TABLE `images` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `products`
 --
 
@@ -163,7 +190,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'123456','Título','Descrição',0,0,'2016-09-16 17:29:42','2016-09-16 17:29:42'),(2,'123456','Título','Descrição',1,0,'2016-09-16 17:30:00','2016-09-16 17:30:00'),(3,'123456','Título','Descrição Modificada',1,1,'2016-09-16 17:30:07','2016-09-16 17:30:37'),(4,'0','titleTest','descriptionTest',1,0,'2016-09-20 19:40:37','2016-09-20 19:40:37'),(5,'0','titleTest','descriptionTest',1,0,'2016-09-20 19:45:59','2016-09-20 19:45:59'),(6,'0','titleTest','descriptionTest',1,0,'2016-09-20 19:46:55','2016-09-20 19:46:55'),(7,'0','titleTest','descriptionTest',1,0,'2016-09-20 19:47:41','2016-09-20 19:47:41'),(8,'0','titleTest','descriptionTest',1,0,'2016-09-20 19:48:34','2016-09-20 19:48:34'),(9,'0','titleTest','descriptionTest',1,0,'2016-09-20 19:50:55','2016-09-20 19:50:55'),(10,'0','titleTest','descriptionTest',1,0,'2016-09-20 19:50:59','2016-09-20 19:50:59'),(11,'9999','titleTest','descriptionTest',1,0,'2016-09-20 20:07:46','2016-09-20 20:07:46'),(12,'9999','titleTest','descriptionTest',1,0,'2016-09-20 20:09:06','2016-09-20 20:09:06'),(13,'10209487248445496','Notebook','Meu note',1,0,'2016-10-14 19:53:59','2016-10-14 19:53:59');
+INSERT INTO `products` VALUES (1,'22','Título','Descrição',0,0,'2016-09-16 17:29:42','2016-09-16 17:29:42'),(2,'123456','Título','Descrição',1,0,'2016-09-16 17:30:00','2016-09-16 17:30:00'),(3,'123456','Título','Descrição Modificada',1,1,'2016-09-16 17:30:07','2016-09-16 17:30:37'),(4,'0','titleTest','descriptionTest',1,0,'2016-09-20 19:40:37','2016-09-20 19:40:37'),(5,'0','titleTest','descriptionTest',1,0,'2016-09-20 19:45:59','2016-09-20 19:45:59'),(6,'0','titleTest','descriptionTest',1,0,'2016-09-20 19:46:55','2016-09-20 19:46:55'),(7,'0','titleTest','descriptionTest',1,0,'2016-09-20 19:47:41','2016-09-20 19:47:41'),(8,'0','titleTest','descriptionTest',1,0,'2016-09-20 19:48:34','2016-09-20 19:48:34'),(9,'0','titleTest','descriptionTest',1,0,'2016-09-20 19:50:55','2016-09-20 19:50:55'),(10,'0','titleTest','descriptionTest',1,0,'2016-09-20 19:50:59','2016-09-20 19:50:59'),(11,'9999','titleTest','descriptionTest',1,0,'2016-09-20 20:07:46','2016-09-20 20:07:46'),(12,'9999','titleTest','descriptionTest',1,0,'2016-09-20 20:09:06','2016-09-20 20:09:06'),(13,'10209487248445496','Notebook','Meu note',1,0,'2016-10-14 19:53:59','2016-10-14 19:53:59');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -271,4 +298,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-10-22 18:44:47
+-- Dump completed on 2016-10-25 15:43:00
