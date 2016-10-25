@@ -1,33 +1,68 @@
- 'use strict';
+'use strict';
 
 var expect = require('chai').expect;
-var ProductsFacade = require('./../../../../src/models/facades/Products/ProductsFacade');
+var productsFacade = require('./../../../../src/models/facades/ProductsFacade');
 var q = require('q');
+var productIdToSearch;
 
 describe('ProductsFacade Tests', function () {
 
 
-    it('should be a function', function (done) {
-        var productsFacade = new ProductsFacade();
+    it('create() should be a function', function (done) {
 
         expect(typeof productsFacade.create).to.equal('function');
         done();
     });
 
-    it('should create or update an user on database', function (done) {
-        var productsFacade = new ProductsFacade();
+    it('create() should create a product on database', function (done) {
 
-        productsFacade.title = 'titletest';
-        productsFacade.description = 'descriptionTest';
-        productsFacade.category = 'categoryTest';
-        productsFacade.tags = 'tagstest';
-        productsFacade.isUsed = false;
-        productsFacade.images = '';
-        productsFacade.auctions = '';
-        productsFacade.donorUser = 24;
+        let product = {
+            title: 'titleTest',
+            userId: 9999,
+            description: 'descriptionTest',
+            isUsed: true,
+            isDeleted: false
+        };
 
-        productsFacade.create().then(function (resolution) {
-            expect(resolution.dataValues.title).to.equal('titletest');
+        productsFacade.create(product).then((resolution) => {
+            productIdToSearch = resolution.dataValues.productId;
+            expect(resolution.dataValues.title).to.equal('titleTest');
+            done();
+        }).catch(function (err) {
+            console.log(err);
+        });
+
+    });
+
+    it('readAll() should be a function', function (done) {
+
+        expect(typeof productsFacade.readAll).to.equal('function');
+        done();
+    });
+
+    it('readAll() should retrieve all products from database', function (done) {
+
+        let userId = 9999;
+
+        productsFacade.readAll(userId).then((resolution) => {
+            expect(resolution[0].dataValues.title).to.equal('titleTest');
+            done();
+        }).catch(function (err) {
+            console.log(err);
+        });
+
+    });
+
+    it('readOne() should be a function', function (done) {
+
+        expect(typeof productsFacade.readOne).to.equal('function');
+        done();
+    });
+
+    it('readOne() should retrieve a specific product from database', function (done) {
+
+        productsFacade.readOne(productIdToSearch).then((resolution) => {
+            expect(resolution.dataValues.title).to.equal('titleTest');
             done();
         }).catch(function (err) {
             console.log(err);

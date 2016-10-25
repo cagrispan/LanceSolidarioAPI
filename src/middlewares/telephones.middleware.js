@@ -8,10 +8,10 @@ function TelephonesMiddleware() {
                 req.body.telephone ) {
                 next();
             } else {
-                res.send(404, {message: "Parameters missing."});
+                res.send(404, {message: 'Parameters missing.'});
             }
         } else {
-            res.send(404, {message: "Parameters missing."});
+            res.send(404, {message: 'Parameters missing.'});
         }
 
     };
@@ -22,10 +22,10 @@ function TelephonesMiddleware() {
             if (req.params.telephoneId) {
                 next();
             } else {
-                res.send(404, {message: "Parameters missing."});
+                res.send(404, {message: 'Parameters missing.'});
             }
         } else {
-            res.send(404, {message: "Parameters missing."});
+            res.send(404, {message: 'Parameters missing.'});
         }
 
     };

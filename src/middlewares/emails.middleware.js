@@ -8,10 +8,10 @@ function EmailsMiddleware() {
                 req.body.email ) {
                 next();
             } else {
-                res.send(404, {message: "Parameters missing."});
+                res.send(404, {message: 'Parameters missing.'});
             }
         } else {
-            res.send(404, {message: "Parameters missing."});
+            res.send(404, {message: 'Parameters missing.'});
         }
 
     };
@@ -22,10 +22,10 @@ function EmailsMiddleware() {
             if (req.params.emailId) {
                 next();
             } else {
-                res.send(404, {message: "Parameters missing."});
+                res.send(404, {message: 'Parameters missing.'});
             }
         } else {
-            res.send(404, {message: "Parameters missing."});
+            res.send(404, {message: 'Parameters missing.'});
         }
 
     };

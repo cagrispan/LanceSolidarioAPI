@@ -32,7 +32,24 @@ module.exports = sequelize.define('purchases', {
         type: Sequelize.INTEGER
     },
     userId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
+    },
+    redirectUrl: {
+        type: Sequelize.STRING
+    },
+    reviewUrl: {
+        type: Sequelize.STRING
+    },
+    reference: {
+        allowNull: false,
+        unique: true,
+        type: Sequelize.STRING
+    },
+    currency: {
+        type: Sequelize.STRING
+    },
+    status: {
+        type: Sequelize.STRING
     }
 });
 

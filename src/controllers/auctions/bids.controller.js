@@ -1,6 +1,5 @@
 'use strict';
 var BidFacade = require('../../models/facades/BidsFacade');
-var config = require('../../config/env.config.js');
 
 function BidsController() {
 

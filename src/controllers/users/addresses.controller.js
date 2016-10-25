@@ -1,8 +1,5 @@
 'use strict';
 var AddressFacade = require('../../models/facades/AddressesFacade');
-var config = require('../../config/env.config.js');
-var jwt = require('jsonwebtoken');
-var q = require('q');
 
 function AddressesController() {
 

@@ -20,7 +20,7 @@ module.exports = sequelize.define('addresses', {
         allowNull: false
     },
     userId:{
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
     },
     street: {
         type: Sequelize.STRING

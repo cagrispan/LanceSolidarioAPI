@@ -20,7 +20,7 @@ module.exports = sequelize.define('products', {
         allowNull: false
     },
     userId:{
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
     },
     title: {
         type: Sequelize.STRING

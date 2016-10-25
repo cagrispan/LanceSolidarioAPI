@@ -1,8 +1,5 @@
 'use strict';
 var ProductFacade = require('../../models/facades/ProductsFacade');
-var config = require('../../config/env.config.js');
-var jwt = require('jsonwebtoken');
-var q = require('q');
 
 function ProductsController() {
 
@@ -42,6 +39,7 @@ function ProductsController() {
 
         var product = req.body;
         product.userId = req.params.facebookId;
+        product.isDeleted = false;
 
         return ProductFacade.create(product)
             .then(function (result) {

@@ -1,3 +1,5 @@
+'use strict';
+
 var AuthController = require('./../controllers/auth/auth.controller');
 var AuthMiddleware = require('./../middlewares/auth.middleware');
 var authController = new AuthController();
@@ -43,20 +45,15 @@ var PurchasesMiddleware = require('./../middlewares/purchases.middleware');
 var purchasesController = new PurchasesController();
 var purchasesMiddleware = new PurchasesMiddleware();
 
+var ImagesController = require('./../controllers/products/images.controller');
+var imagesController = new ImagesController();
+
+
+
 module.exports = function (server) {
 
-    server.opts(/\/.*/g, function (req, res) {
-        res.setHeader('Access-Control-Allow-Methods', 'PUT', 'POST');
-        res.setHeader('Access-Control-Allow-Headers', 'content-type, facebookid, token');
-        res.setHeader('Access-Control-Allow-Origin', 'http://local.lancesolidario.com.br:8080');
-        res.setHeader('Accept-Encoding', 'gzip, deflate, sdch');
-        res.setHeader('Accept-Language', 'pt-BR,pt;q=0.8,en-US;q=0.6,en;q=0.4');
-        res.send(200);
-    });
+     //Auth
 
-    /*
-     Auth
-     */
     server.post('/auth', authController.login);
 
     /*
@@ -97,6 +94,11 @@ module.exports = function (server) {
     server.put('/users/:facebookId/products/:productId', [authMiddleware.isLogged, productsMiddleware.hasId, productsMiddleware.hasAllInformation, productsController.update]);
 
     /*
+     User Product Auctions
+     */
+    server.get('/users/:facebookId/products/:productId/auctions', [authMiddleware.isLogged, auctionsController.getAllByProduct]);
+
+    /*
      User Auctions
      */
     server.get('/users/:facebookId/auctions', [authMiddleware.isLogged, auctionsController.getAll]);
@@ -114,6 +116,7 @@ module.exports = function (server) {
      User Purchases
      */
     server.get('/users/:facebookId/purchases', [authMiddleware.isLogged, purchasesController.getAll]);
+    server.get('/purchases/:reference', purchasesController.getByReference);
     server.post('/users/:facebookId/purchases', [authMiddleware.isLogged, purchasesMiddleware.hasAllInformation, purchasesController.add]);
     server.put('/users/:facebookId/purchases/:purchaseId', [authMiddleware.isLogged, purchasesMiddleware.hasId, purchasesMiddleware.hasAllInformation, purchasesController.update]);
 
@@ -132,4 +135,11 @@ module.exports = function (server) {
      Auction Product
      */
     server.get('/auctions/:auctionId/products', [auctionsController.getProducts]);
+
+    /*
+    Images
+     */
+    server.post('/users/:facebookId/products/:productId/images', [authMiddleware.isLogged, imagesController.add]);
+    server.get('/users/:facebookId/products/:productId/images', [authMiddleware.isLogged, imagesController.get]);
+    server.del('/users/:facebookId/products/images/:imageId', [authMiddleware.isLogged, imagesController.remove]);
 };

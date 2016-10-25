@@ -1,8 +1,5 @@
 'use strict';
 var EmailFacade = require('../../models/facades/EmailsFacade');
-var config = require('../../config/env.config.js');
-var jwt = require('jsonwebtoken');
-var q = require('q');
 
 function EmailsController() {
 

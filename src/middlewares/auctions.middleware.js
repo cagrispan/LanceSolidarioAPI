@@ -12,10 +12,10 @@ function AuctionsMiddleware() {
                 req.body.endDate) {
                 next();
             } else {
-                res.send(404, {message: "Parameters missing.", receivedObject: req.body });
+                res.send(404, {message: 'Parameters missing.', receivedObject: req.body });
             }
         } else {
-            res.send(404, {message: "Parameters missing."});
+            res.send(404, {message: 'Parameters missing.'});
         }
 
     };
@@ -26,10 +26,10 @@ function AuctionsMiddleware() {
             if (req.params.auctionId) {
                 next();
             } else {
-                res.send(404, {message: "Parameters missing."});
+                res.send(404, {message: 'Parameters missing.'});
             }
         } else {
-            res.send(404, {message: "Parameters missing."});
+            res.send(404, {message: 'Parameters missing.'});
         }
 
     };

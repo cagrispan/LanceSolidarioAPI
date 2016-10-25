@@ -23,7 +23,7 @@ module.exports = sequelize.define('telephones', {
         type: Sequelize.STRING
     },
     userId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
     }
 });
 
