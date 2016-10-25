@@ -40,10 +40,10 @@ function AuctionsController() {
                             let endTime = new Date(result[i].dataValues.endDate);
                             let currentDate = new Date();
 
-                            if(result.dataValues.isClosed) {
+                            if(result[i].dataValues.isClosed) {
                                 result[i].dataValues.status = "closed";
                             } else if(currentDate > startTime && currentDate < endTime) {
-                                result[i].dataValues.status = "actived";
+                                result[i].dataValues.status = "active";
                             } else if(currentDate < startTime){
                                 result[i].dataValues.status = "pending";
                             } else if(currentDate > endTime) {
@@ -92,10 +92,10 @@ function AuctionsController() {
                         let endTime = new Date(result[i].dataValues.endDate);
                         let currentDate = new Date();
 
-                        if(result.dataValues.isClosed) {
+                        if(result[i].dataValues.isClosed) {
                             result[i].dataValues.status = "closed";
                         } else if(currentDate > startTime && currentDate < endTime) {
-                            result[i].dataValues.status = "actived";
+                            result[i].dataValues.status = "active";
                         } else if(currentDate < startTime){
                             result[i].dataValues.status = "pending";
                         } else if(currentDate > endTime) {
@@ -133,7 +133,7 @@ function AuctionsController() {
                     if(result.dataValues.isClosed) {
                         result.dataValues.status = "closed";
                     } else if(currentDate > startTime && currentDate < endTime) {
-                        result.dataValues.status = "actived";
+                        result.dataValues.status = "active";
                     } else if(currentDate < startTime){
                         result.dataValues.status = "pending";
                     } else if(currentDate > endTime) {
