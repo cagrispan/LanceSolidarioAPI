@@ -23,7 +23,7 @@ module.exports = sequelize.define('images', {
         type: Sequelize.INTEGER
     },
     base64: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
     }
 });
 
