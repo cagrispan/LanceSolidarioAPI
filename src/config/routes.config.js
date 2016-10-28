@@ -142,5 +142,5 @@ module.exports = function (server) {
      */
     server.post('/users/:facebookId/products/:productId/images', [authMiddleware.isLogged, imagesController.add]);
     server.get('/users/:facebookId/products/:productId/images', [authMiddleware.isLogged, imagesController.get]);
-    server.del('/users/:facebookId/products/images/:imageId', [authMiddleware.isLogged, imagesController.remove]);
+    server.del('/users/:facebookId/products/:productId/images/:imageId', [authMiddleware.isLogged, imagesController.remove]);
 };
