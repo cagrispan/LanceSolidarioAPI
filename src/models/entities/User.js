@@ -39,6 +39,9 @@ module.exports = sequelize.define('user', {
     },
     birthday: {
         type: Sequelize.DATE
+    },
+    profilePicture: {
+        type: Sequelize.STRING
     }
 });
 
