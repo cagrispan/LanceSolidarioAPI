@@ -35,6 +35,24 @@ function ProductsController() {
 
     };
 
+    this.getSpecificProduct = function (req, res) {
+
+        return ProductFacade.readOne(req.params.productId)
+            .then(
+                function (result) {
+                        let product = result;
+                        delete product.dataValues.userId;
+                        delete product.dataValues.createdAt;
+                        delete product.dataValues.updatedAt;
+
+                    return res.send(200, product);
+                },
+                function (err) {
+                    return res.send(500, err);
+                });
+
+    };
+
     this.add = function (req, res) {
 
         var product = req.body;
