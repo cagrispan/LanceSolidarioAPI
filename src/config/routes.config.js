@@ -90,6 +90,7 @@ module.exports = function (server) {
      User Products
      */
     server.get('/users/:facebookId/products', [authMiddleware.isLogged, productsController.getAll]);
+    server.get('/users/:facebookId/products/:productId', [authMiddleware.isLogged, productsController.getSpecificProduct]);
     server.post('/users/:facebookId/products', [authMiddleware.isLogged, productsMiddleware.hasAllInformation, productsController.add]);
     server.put('/users/:facebookId/products/:productId', [authMiddleware.isLogged, productsMiddleware.hasId, productsMiddleware.hasAllInformation, productsController.update]);
 
