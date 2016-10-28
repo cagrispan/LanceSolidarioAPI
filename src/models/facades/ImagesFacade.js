@@ -17,6 +17,10 @@ function readByProduct(productId) {
     return imageEntity.findAll({where:{productId: productId}});
 }
 
+function readOneByProduct(productId) {
+    return imageEntity.findOne({where:{productId: productId}});
+}
+
 function remove(imageId) {
     return imageEntity.findOne({where: {imageId: imageId}})
         .then(function (instance) {
@@ -27,7 +31,8 @@ function remove(imageId) {
 ImageEntityFacade.prototype = {
     create: create,
     readByProduct: readByProduct,
-    remove: remove
+    remove: remove,
+    readOneByProduct: readOneByProduct
 };
 
 var imageEntityFacade = new ImageEntityFacade();

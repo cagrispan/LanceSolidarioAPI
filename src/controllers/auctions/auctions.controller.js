@@ -1,6 +1,9 @@
 'use strict';
 var AuctionFacade = require('../../models/facades/AuctionsFacade');
 var ProductFacade = require('../../models/facades/ProductsFacade');
+var BidFacade = require('../../models/facades/BidsFacade');
+var ImageFacade = require('../../models/facades/ImagesFacade');
+var q = require('q');
 
 function AuctionsController() {
 
@@ -10,7 +13,7 @@ function AuctionsController() {
 
         auction.userId = req.params.facebookId;
 
-        return AuctionFacade.readAll(auction.userId)
+        AuctionFacade.readAll(auction.userId)
             .then(
                 function (result) {
 
@@ -32,34 +35,65 @@ function AuctionsController() {
                             response.auctions.push(result[i].dataValues);
                         }
 
+                        return res.send(200, response);
+
                     } else {
+
+                        var imagePromises = [];
+                        var bidPromises = [];
 
                         for (i = 0; i < result.length; i++) {
 
                             let startTime = new Date(result[i].dataValues.startDate);
                             let endTime = new Date(result[i].dataValues.endDate);
-                            let currentDate = new Date();
+                            let currentServerDate = new Date();
+                            result[i].dataValues.currentServerDate = currentServerDate;
 
-                            if(result[i].dataValues.isClosed) {
+                            if (result[i].dataValues.isClosed) {
                                 result[i].dataValues.status = "closed";
-                            } else if(currentDate > startTime && currentDate < endTime) {
+                            } else if (currentServerDate > startTime && currentServerDate < endTime) {
                                 result[i].dataValues.status = "active";
-                            } else if(currentDate < startTime){
+                            } else if (currentServerDate < startTime) {
                                 result[i].dataValues.status = "pending";
-                            } else if(currentDate > endTime) {
+                            } else if (currentServerDate > endTime) {
                                 result[i].dataValues.status = "finished";
                             }
 
                             delete result[i].dataValues.createdAt;
                             delete result[i].dataValues.updatedAt;
 
+                            imagePromises[i] = ImageFacade.readOneByProduct(result[i].dataValues.productId)
+                                .then(function (image) {
+                                    if (image) {
+                                        return image.dataValues.base64;
+                                    }
+                                });
+
+                            bidPromises[i] = BidFacade.readMax(result[i].dataValues.auctionId)
+                                .then(function (bid) {
+                                    if (bid) {
+                                        return bid;
+                                    }
+                                });
+
                             response.auctions.push(result[i].dataValues);
                         }
 
+                        q.all(imagePromises).done(function () {
+                            q.all(bidPromises).done(function () {
+
+                                for (i = 0; i < response.auctions.length; i++) {
+                                    response.auctions[i].image = imagePromises[i];
+                                    response.auctions[i].maxBid = bidPromises[i];
+                                }
+
+                                return res.send(200, response);
+                            });
+
+                        });
+
                     }
 
-
-                    return res.send(200, response);
                 },
                 function (err) {
                     return res.send(500, err);
@@ -92,13 +126,13 @@ function AuctionsController() {
                         let endTime = new Date(result[i].dataValues.endDate);
                         let currentDate = new Date();
 
-                        if(result[i].dataValues.isClosed) {
+                        if (result[i].dataValues.isClosed) {
                             result[i].dataValues.status = "closed";
-                        } else if(currentDate > startTime && currentDate < endTime) {
+                        } else if (currentDate > startTime && currentDate < endTime) {
                             result[i].dataValues.status = "active";
-                        } else if(currentDate < startTime){
+                        } else if (currentDate < startTime) {
                             result[i].dataValues.status = "pending";
-                        } else if(currentDate > endTime) {
+                        } else if (currentDate > endTime) {
                             result[i].dataValues.status = "finished";
                         }
 
@@ -130,13 +164,13 @@ function AuctionsController() {
                     let endTime = new Date(result.dataValues.endDate);
                     let currentDate = new Date();
 
-                    if(result.dataValues.isClosed) {
+                    if (result.dataValues.isClosed) {
                         result.dataValues.status = "closed";
-                    } else if(currentDate > startTime && currentDate < endTime) {
+                    } else if (currentDate > startTime && currentDate < endTime) {
                         result.dataValues.status = "active";
-                    } else if(currentDate < startTime){
+                    } else if (currentDate < startTime) {
                         result.dataValues.status = "pending";
-                    } else if(currentDate > endTime) {
+                    } else if (currentDate > endTime) {
                         result.dataValues.status = "finished";
                     }
                     delete result.dataValues.createdAt;
