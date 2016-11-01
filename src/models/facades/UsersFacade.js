@@ -14,7 +14,8 @@ function findOrCreate(user) {
             facebookToken: user.facebookToken,
             token: user.token,
             birthday: user.birthday,
-            name: user.name
+            name: user.name,
+            profilePicture: user.profilePicture
         }
     });
 }

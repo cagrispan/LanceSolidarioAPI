@@ -51,6 +51,8 @@ function AuctionsController() {
 
                             if (result[i].dataValues.isClosed) {
                                 result[i].dataValues.status = "closed";
+                            } if (result[i].dataValues.isCanceled) {
+                                result[i].dataValues.status = "canceled";
                             } else if (currentServerDate > startTime && currentServerDate < endTime) {
                                 result[i].dataValues.status = "active";
                             } else if (currentServerDate < startTime) {
@@ -128,6 +130,8 @@ function AuctionsController() {
 
                         if (result[i].dataValues.isClosed) {
                             result[i].dataValues.status = "closed";
+                        } if (result[i].dataValues.isCanceled) {
+                            result[i].dataValues.status = "canceled";
                         } else if (currentDate > startTime && currentDate < endTime) {
                             result[i].dataValues.status = "active";
                         } else if (currentDate < startTime) {
@@ -166,6 +170,8 @@ function AuctionsController() {
 
                     if (result.dataValues.isClosed) {
                         result.dataValues.status = "closed";
+                    } if (result[i].dataValues.isCanceled) {
+                        result[i].dataValues.status = "canceled";
                     } else if (currentDate > startTime && currentDate < endTime) {
                         result.dataValues.status = "active";
                     } else if (currentDate < startTime) {

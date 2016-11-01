@@ -106,7 +106,7 @@ module.exports = function (server) {
      User Auctions
      */
     server.get('/users/:facebookId/auctions', [authMiddleware.isLogged, auctionsController.getAll]);
-    server.post('/users/:facebookId/auctions', [authMiddleware.isLogged, auctionsMiddleware.hasAllInformation, auctionsController.add]);
+    server.post('/users/:facebookId/auctions', [authMiddleware.isLogged, auctionsMiddleware.hasAllInformation, auctionsMiddleware.hasOpenedAuction, auctionsController.add]);
     server.put('/users/:facebookId/auctions/:auctionId', [authMiddleware.isLogged, auctionsMiddleware.hasId, auctionsMiddleware.hasAllInformation, auctionsController.update]);
 
     /*

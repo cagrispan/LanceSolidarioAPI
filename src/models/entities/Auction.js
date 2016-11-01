@@ -39,6 +39,9 @@ module.exports = sequelize.define('auctions', {
     },
     isClosed: {
         type: Sequelize.BOOLEAN
+    },
+    isCanceled: {
+        type: Sequelize.BOOLEAN
     }
 });
 
