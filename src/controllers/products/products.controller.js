@@ -1,5 +1,7 @@
 'use strict';
 var ProductFacade = require('../../models/facades/ProductsFacade');
+var AuctionsFacade = require('../../models/facades/AuctionsFacade');
+var Q = require('q');
 
 function ProductsController() {
 
@@ -18,16 +20,34 @@ function ProductsController() {
                     response.facebookId = product.userId;
                     response.products = [];
 
-                    for(var i=0; i<result.length; i++){
-                        delete result[i].dataValues.userId;
-                        delete result[i].dataValues.createdAt;
-                        delete result[i].dataValues.updatedAt;
+                    let promises = [];
+
+                    for (var i = 0; i < result.length; i++) {
+                        let product = result[i].dataValues;
+
+                        promises.push(productStatus(product.userId, product.productId)
+                            .then((status) => {
+                                if (product.isSold) {
+                                    product.status = 'sold';
+                                } else {
+                                    product.status = status;
+                                }
+
+                                delete product.userId;
+                                delete product.createdAt;
+                                delete product.updatedAt;
+
+                            }));
 
                         response.products.push(result[i].dataValues);
                     }
 
+                    Q.all(promises)
+                        .then((data) => {
+                            return res.send(200, response);
+                        });
 
-                    return res.send(200, response);
+
                 },
                 function (err) {
                     return res.send(500, err);
@@ -40,12 +60,22 @@ function ProductsController() {
         return ProductFacade.readOne(req.params.productId)
             .then(
                 function (result) {
-                        let product = result;
-                        delete product.dataValues.userId;
-                        delete product.dataValues.createdAt;
-                        delete product.dataValues.updatedAt;
+                    let product = result.dataValues;
 
-                    return res.send(200, product);
+                    return productStatus(product.userId, product.productId)
+                        .then((status) => {
+                            if (product.isSold) {
+                                product.status = 'sold';
+                            } else {
+                                product.status = status;
+                            }
+
+                            delete product.userId;
+                            delete product.createdAt;
+                            delete product.updatedAt;
+
+                            return res.send(200, product);
+                        });
                 },
                 function (err) {
                     return res.send(500, err);
@@ -82,6 +112,25 @@ function ProductsController() {
             });
 
     };
+
+    function productStatus(userId, productId) {
+        let status = 'pending';
+        return AuctionsFacade.readAllByProduct(userId, productId)
+            .then((data) => {
+                for (var i in data) {
+                    let startTime = new Date(data[i].dataValues.startDate);
+                    let endTime = new Date(data[i].dataValues.endDate);
+                    let currentDate = new Date();
+                    if (currentDate > startTime && currentDate < endTime) {
+                        if (!data[i].dataValues.isClosed && !data[i].dataValues.isCanceled)
+                            status = 'auctioning';
+                    }
+
+                }
+
+                return status;
+            });
+    }
 
 }
 

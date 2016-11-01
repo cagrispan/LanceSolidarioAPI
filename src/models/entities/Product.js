@@ -33,6 +33,9 @@ module.exports = sequelize.define('products', {
     },
     isDeleted: {
         type: Sequelize.BOOLEAN
+    },
+    isSold: {
+        type: Sequelize.BOOLEAN
     }
 });
 
