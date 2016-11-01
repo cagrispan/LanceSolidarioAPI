@@ -5,6 +5,9 @@ var AuthMiddleware = require('./../middlewares/auth.middleware');
 var authController = new AuthController();
 var authMiddleware = new AuthMiddleware();
 
+var UserAuthMiddleware = require('./../middlewares/user.auth.middleware');
+var userAuthMiddleware = new UserAuthMiddleware();
+
 var UsersController = require('./../controllers/users/users.controller');
 var UsersMiddleware = require('./../middlewares/users.middleware');
 var usersController = new UsersController();
@@ -59,7 +62,7 @@ module.exports = function (server) {
     /*
      User
      */
-    server.get('/users/:facebookId', [authMiddleware.isLogged, usersController.get]);
+    server.get('/users/:facebookId', [userAuthMiddleware.isLogged]);
     server.put('/users/:facebookId', [authMiddleware.isLogged, usersMiddleware.hasAllInformation, usersController.update]);
 
     /*
