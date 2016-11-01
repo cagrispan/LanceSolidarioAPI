@@ -31,7 +31,6 @@ function AuctionsMiddleware() {
                     let startTime = new Date(data[i].dataValues.startDate);
                     let endTime = new Date(data[i].dataValues.endDate);
                     let currentDate = new Date();
-                    console.log(data[i].dataValues)
                     if (currentDate > startTime && currentDate < endTime) {
                         if (!data[i].isClosed && !data[i].isCanceled)
                             isValid = false;

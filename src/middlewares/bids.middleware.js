@@ -1,4 +1,7 @@
 'use strict';
+var BidsFacade = require('../models/facades/BidsFacade');
+var AuctionsFacade = require('../models/facades/AuctionsFacade');
+
 function BidsMiddleware() {
 
     this.hasAllInformation = function (req, res, next) {
@@ -30,6 +33,38 @@ function BidsMiddleware() {
         }
 
     };
+
+    this.isHighestBid = function(req, res, next) {
+       BidsFacade.readMax(req.body.auctionId)
+           .then((greaterBid) => {
+               if(req.body.bid > greaterBid) {
+                   next();
+               } else{
+                   res.send(401, {message: 'Bid is not the greaterBid'});
+               }
+           })
+    };
+
+    this.isValidAuction = function(req, res, next) {
+        let isValid = false;
+
+        AuctionsFacade.readOne(req.body.auctionId)
+            .then((data) => {
+                let startTime = new Date(data.dataValues.startDate);
+                let endTime = new Date(data.dataValues.endDate);
+                let currentDate = new Date();
+                if (currentDate > startTime && currentDate < endTime) {
+                    if (!data.dataValues.isClosed && !data.dataValues.isCanceled)
+                        isValid = true;
+                }
+                if(isValid) {
+                    next();
+                } else {
+                    res.send(401, {message: 'This auctions is invalid to bid.'});
+                }
+
+            });
+    }
 }
 BidsMiddleware.constructor = BidsMiddleware;
 module.exports = BidsMiddleware;
