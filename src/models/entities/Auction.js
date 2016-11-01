@@ -40,8 +40,8 @@ module.exports = sequelize.define('auctions', {
     isClosed: {
         type: Sequelize.BOOLEAN
     },
-    status: {
-        type: Sequelize.STRING
+    isCanceled: {
+        type: Sequelize.BOOLEAN
     }
 });
 
