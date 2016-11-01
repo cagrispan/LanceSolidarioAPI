@@ -1,7 +1,6 @@
 'use strict';
-var AuctionFacade = require('../models/facades/AuctionsFacade');
 
-function AuctionsMiddleware() {
+function PurchaseMiddleware() {
 
     this.hasAllInformation = function (req, res, next) {
 
@@ -32,14 +31,6 @@ function AuctionsMiddleware() {
         }
 
     };
-
-    this.hasOpenedAuction = function (req, res, next) {
-
-        AuctionFacade.readAllByProduct(req.params.facebookId, req.body.productId)
-            .then((data) => {
-                console.log("READ ALL BY PRODUCT: ",data);
-            });
-    }
 }
-AuctionsMiddleware.constructor = AuctionsMiddleware;
-module.exports = AuctionsMiddleware;
+PurchaseMiddleware.constructor = PurchaseMiddleware;
+module.exports = PurchaseMiddleware;
