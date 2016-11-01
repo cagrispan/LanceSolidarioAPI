@@ -216,6 +216,7 @@ function AuctionsController() {
     this.getProducts = function (req, res) {
 
         var auction = {};
+        auction.products = [];
 
         auction.auctionId = req.params.auctionId;
 
@@ -228,7 +229,7 @@ function AuctionsController() {
                     delete result.dataValues.createdAt;
                     delete result.dataValues.updatedAt;
 
-                    auction.products = result.dataValues;
+                    auction.products.push(result.dataValues);
 
                     return res.send(200, auction);
                 },

@@ -5,6 +5,9 @@ var AuthMiddleware = require('./../middlewares/auth.middleware');
 var authController = new AuthController();
 var authMiddleware = new AuthMiddleware();
 
+var UserAuthMiddleware = require('./../middlewares/user.auth.middleware');
+var userAuthMiddleware = new UserAuthMiddleware();
+
 var UsersController = require('./../controllers/users/users.controller');
 var UsersMiddleware = require('./../middlewares/users.middleware');
 var usersController = new UsersController();
@@ -59,7 +62,7 @@ module.exports = function (server) {
     /*
      User
      */
-    server.get('/users/:facebookId', [authMiddleware.isLogged, usersController.get]);
+    server.get('/users/:facebookId', [userAuthMiddleware.isLogged]);
     server.put('/users/:facebookId', [authMiddleware.isLogged, usersMiddleware.hasAllInformation, usersController.update]);
 
     /*
@@ -142,5 +145,5 @@ module.exports = function (server) {
      */
     server.post('/users/:facebookId/products/:productId/images', [authMiddleware.isLogged, imagesController.add]);
     server.get('/users/:facebookId/products/:productId/images', [authMiddleware.isLogged, imagesController.get]);
-    server.del('/users/:facebookId/products/images/:imageId', [authMiddleware.isLogged, imagesController.remove]);
+    server.del('/users/:facebookId/products/:productId/images/:imageId', [authMiddleware.isLogged, imagesController.remove]);
 };
