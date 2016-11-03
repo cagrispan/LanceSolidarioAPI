@@ -5,6 +5,8 @@ var Q = require('q');
 
 function ProductsController() {
 
+    ProductsController.constructor = ProductsController;
+
     this.getAll = function (req, res) {
 
         var product = {};
@@ -23,27 +25,21 @@ function ProductsController() {
                     let promises = [];
 
                     for (var i = 0; i < result.length; i++) {
-                        let product = result[i].dataValues;
 
-                        promises.push(productStatus(product.userId, product.productId)
-                            .then((status) => {
-                                if (product.isSold) {
-                                    product.status = 'sold';
-                                } else {
-                                    product.status = status;
-                                }
+                        promises.push(productStatus(result[i].dataValues)
+                            .then((product) => {
 
                                 delete product.userId;
                                 delete product.createdAt;
                                 delete product.updatedAt;
 
+                                response.products.push(product);
                             }));
 
-                        response.products.push(result[i].dataValues);
                     }
 
                     Q.all(promises)
-                        .then((data) => {
+                        .then(() => {
                             return res.send(200, response);
                         });
 
@@ -60,15 +56,9 @@ function ProductsController() {
         return ProductFacade.readOne(req.params.productId)
             .then(
                 function (result) {
-                    let product = result.dataValues;
 
-                    return productStatus(product.userId, product.productId)
-                        .then((status) => {
-                            if (product.isSold) {
-                                product.status = 'sold';
-                            } else {
-                                product.status = status;
-                            }
+                    return productStatus(result.dataValues)
+                        .then((product) => {
 
                             delete product.userId;
                             delete product.createdAt;
@@ -76,6 +66,7 @@ function ProductsController() {
 
                             return res.send(200, product);
                         });
+
                 },
                 function (err) {
                     return res.send(500, err);
@@ -101,40 +92,66 @@ function ProductsController() {
     this.update = function (req, res) {
 
         var product = req.body;
+
         product.userId = req.params.facebookId;
         product.productId = req.params.productId;
 
-        return ProductFacade.update(product)
-            .spread(function () {
-                return res.send(204);
-            }, function (err) {
-                return res.send(500, {message: err});
-            });
-
+        return ProductFacade.readOne(product.productId)
+            .then(function (result) {
+                    return productStatus(result.dataValues)
+                },
+                function (err) {
+                    return res.send(500, err);
+                })
+            .then(function (result) {
+                    if (result.status === 'pending') {
+                        return ProductFacade.update(product)
+                            .spread(function () {
+                                return res.send(204);
+                            }, function (err) {
+                                return res.send(500, {message: err});
+                            });
+                    } else {
+                        return res.send(409, {message: 'Update conflict.'});
+                    }
+                },
+                function (err) {
+                    return res.send(500, err);
+                });
     };
 
-    function productStatus(userId, productId) {
-        let status = 'pending';
-        return AuctionsFacade.readAllByProduct(userId, productId)
-            .then((data) => {
-                for (var i in data) {
-                    let startTime = new Date(data[i].dataValues.startDate);
-                    let endTime = new Date(data[i].dataValues.endDate);
-                    let currentDate = new Date();
-                    if (currentDate > startTime && currentDate < endTime) {
-                        if (!data[i].dataValues.isClosed && !data[i].dataValues.isCanceled)
-                            status = 'auctioning';
-                    }
+    function productStatus(product) {
 
+        product.status = 'pending';
+
+        if (product.isSold) {
+            product.status = 'sold';
+            return Q.when(product);
+        }
+
+        return AuctionsFacade.readAllByProduct(product.userId, product.productId)
+            .then((auctions) => {
+                for (var i in auctions) {
+
+                    var auction = auctions[i].dataValues;
+
+                    if (!auction.isCanceled){
+                        let startTime = new Date(auction.startDate);
+                        let endTime = new Date(auction.endDate);
+                        let currentDate = new Date();
+
+                        if (currentDate > startTime && currentDate < endTime) {
+                            product.status = 'auctioning';
+                        }
+                    }
                 }
 
-                return status;
+                return product;
             });
     }
 
 }
 
-ProductsController.constructor = ProductsController;
 module.exports = ProductsController;
 
 
