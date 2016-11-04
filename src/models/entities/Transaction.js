@@ -9,7 +9,8 @@ var sequelize = new Sequelize(
     config.db.password,
     {
         host: config.db.hostdb,
-        dialect: config.db.dialect
+        dialect: config.db.dialect,
+        logging: config.db.logging
     }
 );
 

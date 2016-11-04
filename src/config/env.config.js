@@ -5,7 +5,8 @@ module.exports =
         'user': 'root',
         'password': 'admin',
         'dialect': 'mysql',
-        'hostdb': 'localhost'
+        'hostdb': 'localhost',
+        'logging': false
     },
     rest: {
         'hostname': 'localhost',
