@@ -106,7 +106,7 @@ module.exports = function (server) {
      User Auctions
      */
     server.get('/users/:facebookId/auctions', [authMiddleware.isLogged, auctionsController.getAll]);
-    server.post('/users/:facebookId/auctions', [authMiddleware.isLogged, auctionsMiddleware.hasAllInformation, auctionsMiddleware.hasEnoughMinimumBid, auctionsMiddleware.hasOpenedAuction, auctionsController.add]);
+    server.post('/users/:facebookId/auctions', [authMiddleware.isLogged, auctionsMiddleware.hasAllInformation, auctionsController.add]);
     server.put('/users/:facebookId/auctions/:auctionId', [authMiddleware.isLogged, auctionsMiddleware.hasId, auctionsMiddleware.hasAllInformation, auctionsController.update]);
 
     /*
@@ -144,6 +144,6 @@ module.exports = function (server) {
     Images
      */
     server.post('/users/:facebookId/products/:productId/images', [authMiddleware.isLogged, imagesController.add]);
-    server.get('/users/:facebookId/products/:productId/images', [authMiddleware.isLogged, imagesController.get]);
+    server.get('/users/:facebookId/products/:productId/images', [imagesController.get]);
     server.del('/users/:facebookId/products/:productId/images/:imageId', [authMiddleware.isLogged, imagesController.remove]);
 };
