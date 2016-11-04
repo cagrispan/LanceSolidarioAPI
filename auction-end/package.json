@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "jsonwebtoken": "^7.1.9",
     "mysql": "^2.11.1",
     "node-rest-client": "^2.0.1"
   }
