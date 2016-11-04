@@ -140,8 +140,10 @@ function ProductsController() {
                         let endTime = new Date(auction.endDate);
                         let currentDate = new Date();
 
-                        if (currentDate > startTime && currentDate < endTime) {
+                        if (currentDate >= startTime && currentDate < endTime) {
                             product.status = 'auctioning';
+                        } else if (currentDate < startTime) {
+                            product.status = 'awaiting';
                         }
                     }
                 }
