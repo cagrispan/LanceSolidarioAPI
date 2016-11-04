@@ -8,7 +8,8 @@ var sequelize = new Sequelize(
     config.db.password,
     {
         host: config.db.hostdb,
-        dialect: config.db.dialect
+        dialect: config.db.dialect,
+        logging: config.db.logging
     }
 );
 
@@ -32,6 +33,9 @@ module.exports = sequelize.define('products', {
         type: Sequelize.BOOLEAN
     },
     isDeleted: {
+        type: Sequelize.BOOLEAN
+    },
+    isSold: {
         type: Sequelize.BOOLEAN
     }
 });

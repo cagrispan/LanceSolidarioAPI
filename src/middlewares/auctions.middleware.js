@@ -1,4 +1,6 @@
 'use strict';
+var AuctionFacade = require('../models/facades/AuctionsFacade');
+
 function AuctionsMiddleware() {
 
     this.hasAllInformation = function (req, res, next) {
@@ -12,7 +14,7 @@ function AuctionsMiddleware() {
                 req.body.endDate) {
                 next();
             } else {
-                res.send(404, {message: 'Parameters missing.', receivedObject: req.body });
+                res.send(404, {message: 'Parameters missing.', receivedObject: req.body});
             }
         } else {
             res.send(404, {message: 'Parameters missing.'});

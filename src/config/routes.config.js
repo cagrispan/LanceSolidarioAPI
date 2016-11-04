@@ -113,7 +113,7 @@ module.exports = function (server) {
      User Bids
      */
     server.get('/users/:facebookId/bids', [authMiddleware.isLogged, bidsController.getAll]);
-    server.post('/users/:facebookId/bids', [authMiddleware.isLogged, bidsMiddleware.hasAllInformation, bidsController.add]);
+    server.post('/users/:facebookId/bids', [authMiddleware.isLogged, bidsMiddleware.hasAllInformation, bidsMiddleware.isHighestBid, bidsMiddleware.isValidAuction, bidsController.add]);
     server.put('/users/:facebookId/bids/:bidId', [authMiddleware.isLogged, bidsMiddleware.hasId, bidsMiddleware.hasAllInformation, bidsController.update]);
 
     /*
@@ -144,6 +144,6 @@ module.exports = function (server) {
     Images
      */
     server.post('/users/:facebookId/products/:productId/images', [authMiddleware.isLogged, imagesController.add]);
-    server.get('/users/:facebookId/products/:productId/images', [authMiddleware.isLogged, imagesController.get]);
+    server.get('/users/:facebookId/products/:productId/images', [imagesController.get]);
     server.del('/users/:facebookId/products/:productId/images/:imageId', [authMiddleware.isLogged, imagesController.remove]);
 };

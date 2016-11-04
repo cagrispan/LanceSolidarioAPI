@@ -1,5 +1,6 @@
 'use strict';
-function AuctionsMiddleware() {
+
+function PurchaseMiddleware() {
 
     this.hasAllInformation = function (req, res, next) {
 
@@ -31,5 +32,5 @@ function AuctionsMiddleware() {
 
     };
 }
-AuctionsMiddleware.constructor = AuctionsMiddleware;
-module.exports = AuctionsMiddleware;
+PurchaseMiddleware.constructor = PurchaseMiddleware;
+module.exports = PurchaseMiddleware;
