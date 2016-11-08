@@ -1,6 +1,16 @@
 var nodemailer = require('nodemailer');
 
-var transporter = nodemailer.createTransport('smtps://totheworldgroup%40gmail.com:albrcalu@smtp.gmail.com');
+var smtpConfig = {
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true, // use SSL
+    auth: {
+        user: 'totheworldgroup@gmail.com',
+        pass: 'albrcalu'
+    }
+};
+
+var transporter = nodemailer.createTransport(smtpConfig);
 
 var sendEmail = function(receiver, subject, text, callback) {
     var mailOptions = {
