@@ -120,6 +120,7 @@ module.exports = function (server) {
      User Purchases
      */
     server.get('/users/:facebookId/purchases', [authMiddleware.isLogged, purchasesController.getAll]);
+    server.get('/users/:facebookId/purchases/:purchaseId', [authMiddleware.isLogged, purchasesController.getOne]);
     server.get('/purchases/:reference', purchasesController.getByReference);
     server.post('/users/:facebookId/purchases', [authMiddleware.isLogged, purchasesMiddleware.hasAllInformation, purchasesController.add]);
     server.put('/users/:facebookId/purchases/:purchaseId', [authMiddleware.isLogged, purchasesMiddleware.hasId, purchasesMiddleware.hasAllInformation, purchasesController.update]);
@@ -129,6 +130,7 @@ module.exports = function (server) {
      */
     server.get('/auctions', [auctionsController.getAll]);
     server.get('/auctions/:auctionId', [auctionsController.getOne]);
+    server.get('/auctions/:auctionId/purchases', [purchasesController.getByAuction]);
 
     /*
      Auction Bids

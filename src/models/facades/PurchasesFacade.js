@@ -21,11 +21,21 @@ function getByReference(reference) {
     return purchaseEntity.findOne({where: {reference: reference}});
 }
 
+function readOne(purchaseId) {
+    return purchaseEntity.findOne({where: {purchaseId: purchaseId}});
+}
+
+function getByAuction(auctionId) {
+    return purchaseEntity.findAll({where: {auctionId: auctionId}});
+}
+
 PurchaseEntityFacade.prototype = {
     create: create,
     readAll: readAll,
     update: update,
-    getByReference: getByReference
+    getByReference: getByReference,
+    readOne: readOne,
+    getByAuction: getByAuction
 };
 
 var purchaseEntityFacade = new PurchaseEntityFacade();
