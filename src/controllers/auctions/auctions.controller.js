@@ -144,7 +144,15 @@ function AuctionsController() {
                         delete result.dataValues.createdAt;
                         delete result.dataValues.updatedAt;
 
-                        return res.send(200, result.dataValues);
+                        var auction = result.dataValues;
+
+                        return ProductFacade.readOne(auction.productId).then(function(product) {
+                            auction.productTitle = product.title;
+                            return res.send(200, result.dataValues);
+
+                        })
+
+
                     } else {
                         return res.send(204);
                     }
