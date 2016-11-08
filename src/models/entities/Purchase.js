@@ -51,6 +51,9 @@ module.exports = sequelize.define('purchases', {
     },
     status: {
         type: Sequelize.STRING
+    },
+    url: {
+        type: Sequelize.STRING
     }
 });
 
