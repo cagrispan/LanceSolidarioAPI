@@ -148,7 +148,7 @@ function AuctionsController() {
 
                         return ProductFacade.readOne(auction.productId).then(function(product) {
                             auction.productTitle = product.title;
-                            return res.send(200, result.dataValues);
+                            return res.send(200, auction);
 
                         })
 
