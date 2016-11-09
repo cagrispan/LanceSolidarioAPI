@@ -3,14 +3,11 @@ var mysql = require('mysql');
 var Client = require('node-rest-client').Client;
 var jwt = require('jsonwebtoken');
 var sendEmail = require('./services/email.service');
+var config = require('../app/config/env.config');
 
+console.log('Start auction-end task, running each %s second(s)',config.taskTimeout/1000);
 setInterval(function() {
-    var con = mysql.createConnection({
-        host: "localhost",
-        user: "root",
-        password: "admin",
-        database: "lance"
-    });
+    var con = mysql.createConnection(config.dbConfig);
 
     let date = new Date();
     date = date.getFullYear() + "-"+ ("0" + (date.getMonth() + 1)).slice(-2) +"-" + ("0" + date.getDate()).slice(-2) +" " + ("0" + date.getHours()).slice(-2)+":" + ("0" + date.getMinutes()).slice(-2);;
@@ -77,5 +74,5 @@ setInterval(function() {
             }
         }
     });
-}, 60000);
+}, config.taskTimeout);
 
