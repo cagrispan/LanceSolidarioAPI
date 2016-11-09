@@ -15,7 +15,6 @@ var con = mysql.createConnection({
 setInterval(function () {
     var date = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
     date = date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2) + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2);
-    ;
 
     let query = 'SELECT * FROM auctions WHERE endDate LIKE \"' + date + '%\"';
 
@@ -50,40 +49,30 @@ setInterval(function () {
                 client.put(config.path + "/users/" + auction.userId + "/auctions/" + auction.auctionId, args, function () {
                 });
 
-                client.get(config.path + "/users/"+"/purchases", args, function (data) {
-                    var bids = data.bids;
-                    var maxBid;
-                    for (var i in bids) {
-                        if (i == 0) {
-                            maxBid = bids[i];
-                        } else if (bids[i].bid > maxBid.bid) {
-                            maxBid = bids[i];
-                        }
+                client.get(config.path + "/auctions/" + auction.auctionId + "/purchases", args, function (data) {
 
-                    }
+                    var purchases = data.purchases;
 
-                    console.log('maxBid', maxBid);
+                    for (var i in purchases) {
+                        let purchase = data.purchases[i];
 
-                    if (maxBid) {
-                        client.get(config.path + "/users/" + maxBid.userId + "/purchases", args, function (data) {
-                            for (var i in data.purchases) {
-                                let purchase = data.purchases[i];
-                                console.log('hehehe',purchase);
+                        if (purchase.auctionId === auction.auctionId) {
+                            purchase.status = 'canceled';
 
-                                if (purchase.auctionId === auction.auctionId) {
+                            putObject = purchase;
 
-                                    console.log('hahaha');
-                                    purchase.status = 'canceled';
-
-                                    putObject = purchase;
-
-                                    client.put(config.path + "/users/" + maxBid.userId + "/purchases/" + purchase.purchaseId, args, function () {
-                                    });
-
+                            args = {
+                                data: putObject,
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "token": token
                                 }
-                            }
+                            };
 
-                        });
+                            client.put(config.path + "/users/" + auction.auctionId + "/purchases/" + purchase.purchaseId, args, function (data) {
+                                console.log('Auction '+auction.auctionId+' canceled.');
+                            });
+                        }
                     }
                 });
             }
