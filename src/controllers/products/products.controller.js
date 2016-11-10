@@ -145,7 +145,7 @@ function ProductsController() {
                         } else if (currentDate < startTime) {
                             product.status = 'awaiting';
                         } else if (currentDate > endTime) {
-                            product.status = 'unavaliable';
+                            product.status = 'awaitingProcess';
                         }
                     }
                 }
