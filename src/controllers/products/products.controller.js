@@ -144,6 +144,8 @@ function ProductsController() {
                             product.status = 'auctioning';
                         } else if (currentDate < startTime) {
                             product.status = 'awaiting';
+                        } else if (currentDate > endTime) {
+                            product.status = 'unavaliable';
                         }
                     }
                 }

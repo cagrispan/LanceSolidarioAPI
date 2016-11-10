@@ -54,6 +54,12 @@ module.exports = sequelize.define('purchases', {
     },
     url: {
         type: Sequelize.STRING
+    },
+    isPayed: {
+        type: Sequelize.BOOLEAN
+    },
+    isDelivered: {
+        type: Sequelize.BOOLEAN
     }
 });
 

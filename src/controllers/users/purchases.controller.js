@@ -21,6 +21,8 @@ function PurchasesController() {
                     "reference": result.dataValues.reference,
                     "status": result.dataValues.status,
                     "url": result.dataValues.url,
+                    "facebokId": result.dataValues.userId,
+                    "isDelivered": result.dataValues.isDelivered,
                     "productTitle": "",
                     "maxBid": 0
                 };
@@ -97,7 +99,7 @@ function PurchasesController() {
                 function (err) {
                     return res.send(500, err);
                 });
-    }
+    };
 
     this.getAll = function (req, res) {
 
