@@ -1,28 +1,18 @@
--- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
---
--- Host: 127.0.0.1    Database: lance
--- ------------------------------------------------------
--- Server version	5.7.13-log
+-- --------------------------------------------------------
+-- Servidor:                     127.0.0.1
+-- Versão do servidor:           5.7.15-log - MySQL Community Server (GPL)
+-- OS do Servidor:               Win64
+-- HeidiSQL Versão:              9.3.0.4984
+-- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40101 SET NAMES utf8mb4 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
---
--- Table structure for table `addresses`
---
-
+-- Copiando estrutura para tabela lance.addresses
 DROP TABLE IF EXISTS `addresses`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `addresses` (
+CREATE TABLE IF NOT EXISTS `addresses` (
   `addressId` int(11) NOT NULL AUTO_INCREMENT,
   `userId` varchar(255) NOT NULL,
   `street` varchar(255) DEFAULT NULL,
@@ -32,125 +22,109 @@ CREATE TABLE `addresses` (
   `city` varchar(255) DEFAULT NULL,
   `state` varchar(255) DEFAULT NULL,
   `cep` varchar(255) NOT NULL,
-  `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`addressId`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Table structure for table `auctions`
---
+-- Exportação de dados foi desmarcado.
 
+
+-- Copiando estrutura para tabela lance.auctions
 DROP TABLE IF EXISTS `auctions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `auctions` (
+CREATE TABLE IF NOT EXISTS `auctions` (
   `auctionId` int(11) NOT NULL AUTO_INCREMENT,
   `productId` int(11) NOT NULL,
   `institutionId` int(11) NOT NULL,
   `userId` varchar(255) NOT NULL,
   `minimumBid` double DEFAULT NULL,
-  `startDate` datetime NOT NULL,
-  `endDate` datetime NOT NULL,
-  `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL,
-  `isCanceled` tinyint(1) DEFAULT NULL,
+  `startDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `endDate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `isCanceled` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`auctionId`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Table structure for table `bids`
---
+-- Exportação de dados foi desmarcado.
 
+
+-- Copiando estrutura para tabela lance.bids
 DROP TABLE IF EXISTS `bids`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `bids` (
+CREATE TABLE IF NOT EXISTS `bids` (
   `bidId` int(11) NOT NULL AUTO_INCREMENT,
   `userId` varchar(255) NOT NULL,
   `auctionId` int(11) NOT NULL,
   `bid` double NOT NULL,
-  `date` datetime NOT NULL,
-  `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `createdAt` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updatedAt` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `isDeleted` tinyint(1) NOT NULL,
   PRIMARY KEY (`bidId`)
-) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `emails`
---
+-- Exportação de dados foi desmarcado.
 
+
+-- Copiando estrutura para tabela lance.emails
 DROP TABLE IF EXISTS `emails`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `emails` (
+CREATE TABLE IF NOT EXISTS `emails` (
   `emailId` int(11) NOT NULL AUTO_INCREMENT,
   `userId` varchar(255) NOT NULL,
   `email` varchar(255) CHARACTER SET utf8 NOT NULL,
-  `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`emailId`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `images`
---
+-- Exportação de dados foi desmarcado.
 
+
+-- Copiando estrutura para tabela lance.images
 DROP TABLE IF EXISTS `images`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `images` (
+CREATE TABLE IF NOT EXISTS `images` (
   `imageId` int(11) NOT NULL AUTO_INCREMENT,
   `productId` int(11) NOT NULL,
   `base64` mediumtext,
-  `createdAt` datetime DEFAULT NULL,
-  `updatedAt` datetime DEFAULT NULL,
+  `createdAt` timestamp NULL DEFAULT NULL,
+  `updatedAt` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`imageId`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Table structure for table `products`
---
+-- Exportação de dados foi desmarcado.
 
+
+-- Copiando estrutura para tabela lance.products
 DROP TABLE IF EXISTS `products`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `products` (
+CREATE TABLE IF NOT EXISTS `products` (
   `productId` int(11) NOT NULL AUTO_INCREMENT,
   `userId` varchar(255) NOT NULL,
   `title` varchar(255) CHARACTER SET utf8 NOT NULL,
   `description` varchar(1023) CHARACTER SET utf8 NOT NULL,
   `isUsed` tinyint(1) NOT NULL,
   `isDeleted` tinyint(1) NOT NULL,
-  `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `isSold` tinyint(1) DEFAULT NULL,
   `isDelivered` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`productId`)
-) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `purchases`
---
+-- Exportação de dados foi desmarcado.
 
+
+-- Copiando estrutura para tabela lance.purchases
 DROP TABLE IF EXISTS `purchases`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `purchases` (
+CREATE TABLE IF NOT EXISTS `purchases` (
   `purchaseId` int(11) NOT NULL AUTO_INCREMENT,
   `productId` int(11) NOT NULL,
   `auctionId` int(11) NOT NULL,
   `paymentId` int(11) DEFAULT NULL,
+  `isDelivered` tinyint(4) DEFAULT NULL,
+  `isPayed` tinyint(4) DEFAULT NULL,
   `deliveryId` int(11) DEFAULT NULL,
-  `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `userId` varchar(255) NOT NULL,
   `redirectUrl` varchar(255) DEFAULT NULL,
   `reviewUrl` varchar(255) DEFAULT NULL,
@@ -160,56 +134,43 @@ CREATE TABLE `purchases` (
   `url` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`purchaseId`),
   UNIQUE KEY `reference_UNIQUE` (`reference`)
-) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Table structure for table `telephones`
---
+-- Exportação de dados foi desmarcado.
 
+
+-- Copiando estrutura para tabela lance.telephones
 DROP TABLE IF EXISTS `telephones`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `telephones` (
+CREATE TABLE IF NOT EXISTS `telephones` (
   `telephoneId` int(11) NOT NULL AUTO_INCREMENT,
   `userId` varchar(255) NOT NULL,
   `telephone` varchar(255) CHARACTER SET utf8 NOT NULL,
-  `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updatedAt` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`telephoneId`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `users`
---
+-- Exportação de dados foi desmarcado.
 
+
+-- Copiando estrutura para tabela lance.users
 DROP TABLE IF EXISTS `users`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `users` (
+CREATE TABLE IF NOT EXISTS `users` (
   `userId` int(11) NOT NULL AUTO_INCREMENT,
   `facebookId` varchar(255) NOT NULL,
   `token` varchar(255) NOT NULL,
   `facebookToken` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `birthday` datetime DEFAULT NULL,
-  `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL,
+  `birthday` timestamp NULL DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updatedAt` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `profilePicture` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`userId`),
   UNIQUE KEY `facebookId` (`facebookId`),
   UNIQUE KEY `users_facebookId_unique` (`facebookId`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+-- Exportação de dados foi desmarcado.
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2016-11-09 16:01:23
