@@ -9,17 +9,14 @@ console.log('Start auction-end task, running each %s second(s)',config.taskTimeo
 setInterval(function() {
     var con = mysql.createConnection(config.dbConfig);
 
-    let date = new Date();
-    date = date.getFullYear() + "-"+ ("0" + (date.getMonth() + 1)).slice(-2) +"-" + ("0" + date.getDate()).slice(-2) +" " + ("0" + date.getHours()).slice(-2)+":" + ("0" + date.getMinutes()).slice(-2);;
-
-    let query = 'SELECT * FROM auctions WHERE endDate LIKE \"' + date + '%\"';
-
+    //Magic query, vlw flws \o/
+    let query = 'SELECT auctions.* FROM auctions LEFT JOIN purchases ON auctions.auctionId = purchases.auctionId where purchases.auctionId is null && auctions.isCanceled = 0 && TIMESTAMPDIFF(MINUTE,now(),endDate)<0;';
     var client = new Client();
     var token = jwt.sign({id: 'auction-end'}, 'banana', {algorithm: 'HS256'});
 
-
     con.query(query,function(err,rows){
-        if(err) throw err;
+
+        if(err) console.log(err);
 
         for(var i in rows) {
             let postObject = {
