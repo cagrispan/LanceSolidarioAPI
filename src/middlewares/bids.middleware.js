@@ -45,6 +45,19 @@ function BidsMiddleware() {
            })
     };
 
+    this.isValidBid = function(req, res, next) {
+        AuctionsFacade.readOne(req.body.auctionId)
+            .then((resolution) => {
+                var auction = resolution.dataValues;
+                if(req.body.bid >= auction.minimumBid) {
+                    next();
+                } else {
+                    res.send(401, {message: 'Bid is less than minimum bid.'});
+                }
+
+        });
+    }
+
     this.isValidAuction = function(req, res, next) {
         let isValid = false;
 
