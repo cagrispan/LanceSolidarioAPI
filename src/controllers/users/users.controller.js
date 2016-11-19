@@ -1,5 +1,6 @@
 'use strict';
 var UserFacade = require('../../models/facades/UsersFacade');
+var AddressFacade = require('../../models/facades/AddressesFacade');
 var jwt = require('jsonwebtoken');
 
 function UsersController() {
@@ -44,7 +45,27 @@ function UsersController() {
                     delete result.dataValues.facebookToken;
                     delete result.dataValues.birthday;
 
-                    return res.send(200, result.dataValues);
+                    var returnedUser = result.dataValues;
+
+                    return AddressFacade.readAll(returnedUser.facebookId).then(function(result){
+                        var address;
+                        if(result.length) {
+                            address = result[0].dataValues;
+                            delete address.createdAt;
+                            delete address.updatedAt;
+                            delete address.addressId;
+                            delete address.neighborhood;
+                            delete address.complement;
+                            delete address.number;
+                            delete address.userId;
+                            delete address.street;
+                        }
+
+                        returnedUser.address = address;
+                        return res.send(200, returnedUser);
+
+                    });
+
                 },
                 function (err) {
                     return res.send(500, err);
