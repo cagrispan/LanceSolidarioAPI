@@ -1,0 +1,24 @@
+{
+    "apps": [
+        {
+            "name": "lance.rest.api",
+            "script": "./src/app.js"
+        },
+        {
+            "name": "auction.end",
+            "script": "./auction-end/app/index.es6"
+        },
+        {
+            "name": "auction.cancel",
+            "script": "./auction-cancel/app/index.es6"
+        },
+        {
+            "name": "jqueue-process",
+            "script": "./jqueue-process/app/index.js"
+        },
+        {
+            "name": "pagseguro",
+            "script": "./pagseguro/app/index.js"
+        }
+    ]
+}

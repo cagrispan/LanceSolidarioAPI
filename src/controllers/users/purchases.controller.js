@@ -24,7 +24,8 @@ function PurchasesController() {
                     "facebokId": result.dataValues.userId,
                     "isDelivered": result.dataValues.isDelivered,
                     "productTitle": "",
-                    "maxBid": 0
+                    "maxBid": 0,
+                    "isPayed":result.dataValues.isPayed
                 };
 
                 return BidsFacade.readMax(purchase.auctionId);

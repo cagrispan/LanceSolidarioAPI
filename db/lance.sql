@@ -11,7 +11,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Copiando estrutura para tabela lance.addresses
-DROP TABLE IF EXISTS `addresses`;
 CREATE TABLE IF NOT EXISTS `addresses` (
   `addressId` int(11) NOT NULL AUTO_INCREMENT,
   `userId` varchar(255) NOT NULL,
@@ -31,7 +30,6 @@ CREATE TABLE IF NOT EXISTS `addresses` (
 
 
 -- Copiando estrutura para tabela lance.auctions
-DROP TABLE IF EXISTS `auctions`;
 CREATE TABLE IF NOT EXISTS `auctions` (
   `auctionId` int(11) NOT NULL AUTO_INCREMENT,
   `productId` int(11) NOT NULL,
@@ -50,7 +48,6 @@ CREATE TABLE IF NOT EXISTS `auctions` (
 
 
 -- Copiando estrutura para tabela lance.bids
-DROP TABLE IF EXISTS `bids`;
 CREATE TABLE IF NOT EXISTS `bids` (
   `bidId` int(11) NOT NULL AUTO_INCREMENT,
   `userId` varchar(255) NOT NULL,
@@ -67,7 +64,6 @@ CREATE TABLE IF NOT EXISTS `bids` (
 
 
 -- Copiando estrutura para tabela lance.emails
-DROP TABLE IF EXISTS `emails`;
 CREATE TABLE IF NOT EXISTS `emails` (
   `emailId` int(11) NOT NULL AUTO_INCREMENT,
   `userId` varchar(255) NOT NULL,
@@ -81,7 +77,6 @@ CREATE TABLE IF NOT EXISTS `emails` (
 
 
 -- Copiando estrutura para tabela lance.images
-DROP TABLE IF EXISTS `images`;
 CREATE TABLE IF NOT EXISTS `images` (
   `imageId` int(11) NOT NULL AUTO_INCREMENT,
   `productId` int(11) NOT NULL,
@@ -95,7 +90,6 @@ CREATE TABLE IF NOT EXISTS `images` (
 
 
 -- Copiando estrutura para tabela lance.products
-DROP TABLE IF EXISTS `products`;
 CREATE TABLE IF NOT EXISTS `products` (
   `productId` int(11) NOT NULL AUTO_INCREMENT,
   `userId` varchar(255) NOT NULL,
@@ -114,7 +108,6 @@ CREATE TABLE IF NOT EXISTS `products` (
 
 
 -- Copiando estrutura para tabela lance.purchases
-DROP TABLE IF EXISTS `purchases`;
 CREATE TABLE IF NOT EXISTS `purchases` (
   `purchaseId` int(11) NOT NULL AUTO_INCREMENT,
   `productId` int(11) NOT NULL,
@@ -140,7 +133,6 @@ CREATE TABLE IF NOT EXISTS `purchases` (
 
 
 -- Copiando estrutura para tabela lance.telephones
-DROP TABLE IF EXISTS `telephones`;
 CREATE TABLE IF NOT EXISTS `telephones` (
   `telephoneId` int(11) NOT NULL AUTO_INCREMENT,
   `userId` varchar(255) NOT NULL,
@@ -154,14 +146,13 @@ CREATE TABLE IF NOT EXISTS `telephones` (
 
 
 -- Copiando estrutura para tabela lance.users
-DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `userId` int(11) NOT NULL AUTO_INCREMENT,
   `facebookId` varchar(255) NOT NULL,
   `token` varchar(255) NOT NULL,
   `facebookToken` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `birthday` timestamp NULL DEFAULT NULL,
+  `birthday` date DEFAULT NULL,
   `createdAt` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updatedAt` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `profilePicture` varchar(255) DEFAULT NULL,
@@ -174,3 +165,4 @@ CREATE TABLE IF NOT EXISTS `users` (
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+lancelancelance
