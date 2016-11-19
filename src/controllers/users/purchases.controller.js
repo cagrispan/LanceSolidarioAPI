@@ -28,7 +28,7 @@ function PurchasesController() {
                     "isDelivered": result.dataValues.isDelivered,
                     "productTitle": "",
                     "maxBid": 0,
-                    "isPayed":result.dataValues.isPayed
+                    "isPaid":result.dataValues.isPaid
                 };
 
                 return BidsFacade.readMax(purchase.auctionId);
