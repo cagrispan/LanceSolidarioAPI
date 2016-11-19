@@ -51,6 +51,9 @@ var purchasesMiddleware = new PurchasesMiddleware();
 var ImagesController = require('./../controllers/products/images.controller');
 var imagesController = new ImagesController();
 
+var InstitutionsController = require('./../controllers/institutions/institutions.controller');
+var institutionsController = new InstitutionsController();
+
 
 
 module.exports = function (server) {
@@ -148,4 +151,10 @@ module.exports = function (server) {
     server.post('/users/:facebookId/products/:productId/images', [authMiddleware.isLogged, imagesController.add]);
     server.get('/users/:facebookId/products/:productId/images', [imagesController.get]);
     server.del('/users/:facebookId/products/:productId/images/:imageId', [authMiddleware.isLogged, imagesController.remove]);
+
+    /*
+    Institutions
+     */
+    server.get('/institutions/', [institutionsController.getAll]);
+    server.get('/institutions/:institutionId', [institutionsController.getOne]);
 };
