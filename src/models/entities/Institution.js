@@ -40,6 +40,9 @@ module.exports = sequelize.define('institutions', {
     },
     city: {
         type: Sequelize.STRING
+    },
+    page: {
+        type: Sequelize.STRING
     }
 });
 
