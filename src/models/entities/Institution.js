@@ -43,6 +43,9 @@ module.exports = sequelize.define('institutions', {
     },
     page: {
         type: Sequelize.STRING
+    },
+    logo: {
+        type: Sequelize.TEXT
     }
 });
 

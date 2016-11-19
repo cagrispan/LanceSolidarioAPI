@@ -14,7 +14,7 @@ function InstitutionsController() {
 
                 institutions.push(resolution[i].dataValues);
             }
-            return res.send(200, institutions);
+            return res.send(200, {institutions: institutions});
         });
     };
 
