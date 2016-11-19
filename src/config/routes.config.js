@@ -124,6 +124,7 @@ module.exports = function (server) {
      */
     server.get('/users/:facebookId/purchases', [authMiddleware.isLogged, purchasesController.getAll]);
     server.get('/users/:facebookId/purchases/:purchaseId', [authMiddleware.isLogged, purchasesController.getOne]);
+    server.get('/users/:facebookId/purchases/:purchaseId/donors/:donorsId', [authMiddleware.isLogged, purchasesController.getDonor]);
     server.get('/purchases/:reference', purchasesController.getByReference);
     server.post('/users/:facebookId/purchases', [authMiddleware.isLogged, purchasesMiddleware.hasAllInformation, purchasesController.add]);
     server.put('/users/:facebookId/purchases/:purchaseId', [authMiddleware.isLogged, purchasesMiddleware.hasId, purchasesMiddleware.hasAllInformation, purchasesController.update]);

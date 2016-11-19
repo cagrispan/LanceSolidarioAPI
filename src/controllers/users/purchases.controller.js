@@ -6,6 +6,9 @@ var ProductsFacade = require('../../models/facades/ProductsFacade');
 var uuid = require('uuid');
 var UsersFacade = require('../../models/facades/UsersFacade');
 var q = require('q');
+var AddressFacade = require('../../models/facades/AddressesFacade');
+var TelephoneFacade = require('../../models/facades/TelephonesFacade');
+var EmailFacade = require('../../models/facades/EmailsFacade');
 
 function PurchasesController() {
 
@@ -36,6 +39,69 @@ function PurchasesController() {
                 purchase.productTitle = product.dataValues.title;
                 return res.send(200, purchase);
             });
+    };
+
+    this.getDonor = function (req, res) {
+        var user = {};
+        UsersFacade.findOne(req.params.donorsId)
+            .then(function(result) {
+                if(result) {
+                    user = result.dataValues;
+                    delete user.createdAt;
+                    delete user.updatedAt;
+                    delete user.userId;
+                    delete user.token;
+                    delete user.birthday;
+                    delete user.facebookToken;
+                    delete user.facebookId;
+
+                    return AddressFacade.readAll(req.params.donorsId);
+                }
+            })
+            .then(function(result){
+                var address;
+                if(result.length) {
+                    address = result[0].dataValues;
+                    delete address.createdAt;
+                    delete address.updatedAt;
+                    delete address.addressId;
+                    delete address.neighborhood;
+                    delete address.complement;
+                    delete address.number;
+                    delete address.userId;
+                    delete address.street;
+
+                    user.address = address;
+                }
+
+                return EmailFacade.readAll(req.params.donorsId);
+            })
+            .then(function(result) {
+                if(result.length) {
+                    var emails = [];
+
+                    for(var i in result){
+                        emails.push(result[i].dataValues.email);
+                    }
+
+                    user.emails = emails;
+                }
+                return TelephoneFacade.readAll(req.params.donorsId);
+            }).then(function(result) {
+                if(result.length) {
+                    var telephones = [];
+
+                    for(var i in result){
+                        telephones.push(result[i].dataValues.telephone);
+                    }
+
+                    user.telephones = telephones;
+                }
+
+                return res.send(200, user);
+            });
+
+
     };
 
     this.getByAuction = function(req, res) {
