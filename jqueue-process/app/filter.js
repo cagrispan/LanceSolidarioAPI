@@ -1,5 +1,4 @@
 var typeStatus = require('./config/type.config'),
-    apiCommunication = require('./services/api.communication.service'),
     uuid = require('uuid'),
     Q = require('q'),
     Client = require('node-rest-client').Client,
@@ -25,6 +24,10 @@ exports.filter = function (message) {
                 client.get("http://localhost:7780/purchases/" + data.transaction.reference[0], function (data) {
                     var purchase = data;
                     purchase.status = status;
+
+                    if(status === "paid") {
+                        purchase.isPaid = true;
+                    }
 
                     var args = {
                         data: purchase,

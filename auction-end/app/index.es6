@@ -20,8 +20,8 @@ setInterval(function() {
 
         for(var i in rows) {
             let postObject = {
-                "redirectUrl": "to fix",
-                "reviewUrl": "to fix",
+                "redirectUrl": "www.lancesolidario.com.br/user/purchases",
+                "reviewUrl": "www.lancesolidario.com.br/user/purchases",
                 "productId": rows[i].productId,
                 "auctionId": rows[i].auctionId
             };
@@ -55,7 +55,8 @@ setInterval(function() {
                                 if(data.emails.length) {
                                     var receiver = data.emails[0].email;
                                     var subject = 'Você ganhou o leilão!';
-                                    var text = 'Parabéns, você ganhou o leilão. Link para pagar: ' + linkToPay;
+                                    var text = 'Parabéns, você ganhou o leilão do site lance solidário.' +
+                                        ' Link para pagar: ' + linkToPay;
                                     sendEmail(receiver, subject, text, function(err) {
                                         if(err) {
                                             console.log(err);
