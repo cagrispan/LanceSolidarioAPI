@@ -12,7 +12,7 @@ setInterval(function () {
     var date = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
     date = date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2) + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2);
 
-    let query = 'SELECT * FROM auctions WHERE endDate LIKE \"' + date + '%\"';
+    let query = 'SELECT auctions.*,TIMESTAMPDIFF(MINUTE ,now(),auctions.endDate) FROM auctions LEFT JOIN purchases ON auctions.auctionId = purchases.auctionId where purchases.auctionId = auctions.auctionId && auctions.isCanceled = 0 && purchases.status = \'PENDING\' && TIMESTAMPDIFF(MINUTE ,now(),auctions.endDate)<=(-14400)';
 
     var client = new Client();
     var token = jwt.sign({id: 'auction-end'}, 'banana', {algorithm: 'HS256'});
@@ -26,7 +26,7 @@ setInterval(function () {
 
             let putObject = {
                 "startDate": auction.startDate,
-                "endDate": new Date((new Date(auction.endDate).getTime() - (2 * 60 * 60 * 1000))),
+                "endDate": auction.endDate,
                 "institutionId": auction.institutionId,
                 "productId": auction.productId,
                 "minimumBid": auction.minimumBid,
@@ -53,7 +53,8 @@ setInterval(function () {
                         let purchase = data.purchases[i];
 
                         if (purchase.auctionId === auction.auctionId) {
-                            purchase.status = 'canceled';
+                            purchase.status = 'CANCELED';
+                            purchase.isPaid = false;
 
                             putObject = purchase;
 

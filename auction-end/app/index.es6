@@ -80,6 +80,8 @@ setInterval(function () {
                                                 '<br />' +
                                                 'Lembramos que ao comprar no Lance Solidário, ' +
                                                 'o valor pago pelo produto é doado para uma instituição escolhida pelo antigo dono do produto. ' +
+                                                'Ainda, é importante ressaltar que, para efetivar a compra, o pagamento deve ser feito em até 7 dias, ' +
+                                                'caso contrário a compra será cancelada. ' +
                                                 'Volte a comprar com a gente e continue ajudando!' +
                                                 '<br />' +
                                                 '<br />' +
