@@ -25,8 +25,6 @@ exports.filter = function (message) {
                 }
 
                 var status = typeStatus[data.transaction.status[0]];
-                console.log(" http://localhost:7780/purchases/" + data.transaction.reference[0]);
-
                 client.get("http://localhost:7780/purchases/" + data.transaction.reference[0], function (data) {
                     var purchase = data;
                     purchase.status = status;
@@ -42,9 +40,6 @@ exports.filter = function (message) {
                             "token": token
                         }
                     };
-
-                    console.log("http://localhost:7780/users/" + purchase.userId + "/purchases/" + purchase.purchaseId);
-                    console.log(purchase);
 
                     client.put("http://localhost:7780/users/" + purchase.userId + "/purchases/" + purchase.purchaseId, args, function (data, response) {
                         client.get("http://localhost:7780/auctions/" + purchase.auctionId + "/products", function (data) {

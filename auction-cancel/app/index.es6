@@ -2,17 +2,13 @@
 var mysql = require('mysql');
 var Client = require('node-rest-client').Client;
 var jwt = require('jsonwebtoken');
-var sendEmail = require('./services/email.service');
 var config = require('../app/config/env.config');
 
 var con = mysql.createConnection(config.dbConfig);
 console.log('Start auction-cancel task, running each %s second(s)',config.taskTimeout/1000);
 setInterval(function () {
 
-    var date = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
-    date = date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2) + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2);
-
-    let query = 'SELECT auctions.*,TIMESTAMPDIFF(MINUTE ,now(),auctions.endDate) FROM auctions LEFT JOIN purchases ON auctions.auctionId = purchases.auctionId where purchases.auctionId = auctions.auctionId && auctions.isCanceled = 0 && purchases.status = \'PENDING\' && TIMESTAMPDIFF(MINUTE ,now(),auctions.endDate)<=(-14400)';
+        let query = 'SELECT auctions.*,TIMESTAMPDIFF(MINUTE ,now(),auctions.endDate) FROM auctions LEFT JOIN purchases ON auctions.auctionId = purchases.auctionId where purchases.auctionId = auctions.auctionId && auctions.isCanceled = 0 && purchases.status = \'PENDING\' && TIMESTAMPDIFF(MINUTE ,now(),auctions.endDate)<=(-14400)';
 
     var client = new Client();
     var token = jwt.sign({id: 'auction-end'}, 'banana', {algorithm: 'HS256'});
