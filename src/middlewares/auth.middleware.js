@@ -7,7 +7,7 @@ function AuthMiddleware() {
         if (req.headers.token) {
             try {
                 var decoded = jwt.verify(req.headers.token, 'banana');
-                if (decoded.id === req.params.facebookId || decoded.id === 'auction-end') {
+                if (decoded.id === req.params.facebookId || decoded.id === 'auction-end'|| decoded.id === 'jqueue-process') {
                     return next();
                 } else {
                     return res.send(401, {'code': 'Unauthorized', 'message': 'Unauthorized. Invalid token.'});

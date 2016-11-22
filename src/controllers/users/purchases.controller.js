@@ -16,9 +16,8 @@ function PurchasesController() {
         var purchase = {};
         return PurchaseFacade.readOne(req.params.purchaseId)
             .then(function(result) {
-                console.log(result.dataValues);
                 purchase = {
-                    "purchaseId": result.purchaseId,
+                    "purchaseId": result.dataValues.purchaseId,
                     "auctionId": result.dataValues.auctionId,
                     "productId": result.dataValues.productId,
                     "reference": result.dataValues.reference,
@@ -60,7 +59,7 @@ function PurchasesController() {
             })
             .then(function(result){
                 var address;
-                if(result.length) {
+                if(result) {
                     address = result[0].dataValues;
                     delete address.createdAt;
                     delete address.updatedAt;
@@ -186,32 +185,35 @@ function PurchasesController() {
                     var bidsPromises = [];
                     var productsPromises = [];
 
-                    for (var i = 0; i < result.length; i++) {
+                    if(result) {
 
-                        delete result[i].dataValues.userId;
-                        delete result[i].dataValues.createdAt;
-                        delete result[i].dataValues.updatedAt;
-                        delete result[i].dataValues.paymentId;
-                        delete result[i].dataValues.redirectUrl;
-                        delete result[i].dataValues.reviewUrl;
-                        delete result[i].dataValues.currency;
-                        delete result[i].dataValues.deliveryId;
+                        for (var i = 0; i < result.length; i++) {
 
-                        bidsPromises[i] = BidsFacade.readMax(result[i].dataValues.auctionId)
-                            .then(function (bid) {
-                                if (bid) {
-                                    return bid;
-                                }
-                            });
+                            delete result[i].dataValues.userId;
+                            delete result[i].dataValues.createdAt;
+                            delete result[i].dataValues.updatedAt;
+                            delete result[i].dataValues.paymentId;
+                            delete result[i].dataValues.redirectUrl;
+                            delete result[i].dataValues.reviewUrl;
+                            delete result[i].dataValues.currency;
+                            delete result[i].dataValues.deliveryId;
 
-                        productsPromises[i] = ProductsFacade.readOne(result[i].dataValues.productId)
-                            .then(function (product) {
-                                if(product.dataValues){
-                                    return product.dataValues;
-                                }
-                            });
+                            bidsPromises[i] = BidsFacade.readMax(result[i].dataValues.auctionId)
+                                .then(function (bid) {
+                                    if (bid) {
+                                        return bid;
+                                    }
+                                });
 
-                        response.purchases.push(result[i].dataValues);
+                            productsPromises[i] = ProductsFacade.readOne(result[i].dataValues.productId)
+                                .then(function (product) {
+                                    if (product.dataValues) {
+                                        return product.dataValues;
+                                    }
+                                });
+
+                            response.purchases.push(result[i].dataValues);
+                        }
                     }
 
                     q.all(productsPromises).done(function () {
@@ -267,7 +269,7 @@ function PurchasesController() {
                 postObject.items[0].amount = resolution.toFixed(2);
 
                 return ProductsFacade.readOne(postObject.items[0].id).then(resolution => {
-                    postObject.items[0].description = resolution.dataValues.description;
+                    postObject.items[0].description = "Leilão vencido no lance solidário.";
 
                     client.post("http://localhost:7811/payments", args, function (data, response) {
                         purchase.url = data.url;
@@ -315,16 +317,13 @@ function PurchasesController() {
         return PurchaseFacade.getByReference(reference)
             .then((resolution) => {
                 var purchase = resolution.dataValues;
-                UsersFacade.findOne(purchase.userId).then((resolution) => {
-                    purchase.token = resolution.dataValues.token;
-                    return res.send(200, purchase);
-                });
+                return res.send(200, purchase);
             }, function (err) {
                 return res.send(500, {message: err});
             })
 
 
-    }
+    };
 
 }
 

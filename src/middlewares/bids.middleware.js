@@ -56,7 +56,7 @@ function BidsMiddleware() {
                 }
 
         });
-    }
+    };
 
     this.isValidAuction = function(req, res, next) {
         let isValid = false;

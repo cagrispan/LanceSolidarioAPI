@@ -24,18 +24,20 @@ function ProductsController() {
 
                     let promises = [];
 
-                    for (var i = 0; i < result.length; i++) {
+                    if(result) {
+                        for (var i = 0; i < result.length; i++) {
 
-                        promises.push(productStatus(result[i].dataValues)
-                            .then((product) => {
+                            promises.push(productStatus(result[i].dataValues)
+                                .then((product) => {
 
-                                delete product.userId;
-                                delete product.createdAt;
-                                delete product.updatedAt;
+                                    delete product.userId;
+                                    delete product.createdAt;
+                                    delete product.updatedAt;
 
-                                response.products.push(product);
-                            }));
+                                    response.products.push(product);
+                                }));
 
+                        }
                     }
 
                     Q.all(promises)
@@ -104,7 +106,7 @@ function ProductsController() {
                     return res.send(500, err);
                 })
             .then(function (result) {
-                    if (result.status === 'pending') {
+                    if (result.status === 'pending' || result.isSold != product.isSold) {
                         return ProductFacade.update(product)
                             .spread(function () {
                                 return res.send(204);

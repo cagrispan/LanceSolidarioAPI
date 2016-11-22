@@ -22,13 +22,16 @@ function ImagesController() {
         return ImageFacade.readByProduct(req.params.productId)
             .then(function (result) {
                 let images = [];
-                for(var i in result) {
-                    let image = result[i].dataValues;
 
-                    delete image.createdAt;
-                    delete image.updatedAt;
+                if(result) {
+                    for(var i in result) {
+                        let image = result[i].dataValues;
 
-                    images.push(image);
+                        delete image.createdAt;
+                        delete image.updatedAt;
+
+                        images.push(image);
+                    }
                 }
                 return res.send(200, images);
             }, function (err) {

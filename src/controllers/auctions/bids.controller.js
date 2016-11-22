@@ -20,26 +20,30 @@ function BidsController() {
 
                         response.facebookId = req.params.facebookId;
 
-                        for (i = 0; i < result.length; i++) {
+                        if(result){
+                            for (i = 0; i < result.length; i++) {
 
-                            delete result[i].dataValues.userId;
-                            delete result[i].dataValues.createdAt;
-                            delete result[i].dataValues.updatedAt;
+                                delete result[i].dataValues.userId;
+                                delete result[i].dataValues.createdAt;
+                                delete result[i].dataValues.updatedAt;
 
-                            response.bids.push(result[i].dataValues);
+                                response.bids.push(result[i].dataValues);
+                            }
                         }
 
                     }else{
 
                         response.auctionId = req.params.auctionId;
 
-                        for (i = 0; i < result.length; i++) {
+                        if(result){
+                            for (i = 0; i < result.length; i++) {
 
-                            delete result[i].dataValues.auctionId;
-                            delete result[i].dataValues.createdAt;
-                            delete result[i].dataValues.updatedAt;
+                                delete result[i].dataValues.auctionId;
+                                delete result[i].dataValues.createdAt;
+                                delete result[i].dataValues.updatedAt;
 
-                            response.bids.push(result[i].dataValues);
+                                response.bids.push(result[i].dataValues);
+                            }
                         }
 
                     }

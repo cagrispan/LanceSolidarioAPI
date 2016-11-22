@@ -8,11 +8,13 @@ function InstitutionsController() {
         var institutions = [];
 
         return InstitutionsFacade.readAll().then(function(resolution) {
-            for(var i in resolution) {
-                delete resolution[i].dataValues.createdAt;
-                delete resolution[i].dataValues.updatedAt;
+            if(resolution){
+                for(var i in resolution) {
+                    delete resolution[i].dataValues.createdAt;
+                    delete resolution[i].dataValues.updatedAt;
 
-                institutions.push(resolution[i].dataValues);
+                    institutions.push(resolution[i].dataValues);
+                }
             }
             return res.send(200, {institutions: institutions});
         });

@@ -26,15 +26,17 @@ function AuctionsController() {
 
                         response.facebookId = auction.userId;
 
-                        for (i = 0; i < result.length; i++) {
+                        if (result) {
+                            for (i = 0; i < result.length; i++) {
 
-                            auctionStatus(result[i].dataValues);
+                                auctionStatus(result[i].dataValues);
 
-                            delete result[i].dataValues.userId;
-                            delete result[i].dataValues.createdAt;
-                            delete result[i].dataValues.updatedAt;
+                                delete result[i].dataValues.userId;
+                                delete result[i].dataValues.createdAt;
+                                delete result[i].dataValues.updatedAt;
 
-                            response.auctions.push(result[i].dataValues);
+                                response.auctions.push(result[i].dataValues);
+                            }
                         }
 
                         return res.send(200, response);
@@ -44,28 +46,30 @@ function AuctionsController() {
                         var imagePromises = [];
                         var bidPromises = [];
 
-                        for (i = 0; i < result.length; i++) {
+                        if (result) {
+                            for (i = 0; i < result.length; i++) {
 
-                            auctionStatus(result[i].dataValues);
+                                auctionStatus(result[i].dataValues);
 
-                            delete result[i].dataValues.createdAt;
-                            delete result[i].dataValues.updatedAt;
+                                delete result[i].dataValues.createdAt;
+                                delete result[i].dataValues.updatedAt;
 
-                            imagePromises[i] = ImageFacade.readOneByProduct(result[i].dataValues.productId)
-                                .then(function (image) {
-                                    if (image) {
-                                        return image.dataValues.base64;
-                                    }
-                                });
+                                imagePromises[i] = ImageFacade.readOneByProduct(result[i].dataValues.productId)
+                                    .then(function (image) {
+                                        if (image) {
+                                            return image.dataValues.base64;
+                                        }
+                                    });
 
-                            bidPromises[i] = BidFacade.readMax(result[i].dataValues.auctionId)
-                                .then(function (bid) {
-                                    if (bid) {
-                                        return bid;
-                                    }
-                                });
+                                bidPromises[i] = BidFacade.readMax(result[i].dataValues.auctionId)
+                                    .then(function (bid) {
+                                        if (bid) {
+                                            return bid;
+                                        }
+                                    });
 
-                            response.auctions.push(result[i].dataValues);
+                                response.auctions.push(result[i].dataValues);
+                            }
                         }
 
                         q.all(imagePromises).done(function () {
@@ -109,15 +113,17 @@ function AuctionsController() {
                     response.facebookId = auction.userId;
                     response.productId = auction.productId;
 
-                    for (i = 0; i < result.length; i++) {
+                    if(result) {
+                        for (i = 0; i < result.length; i++) {
 
-                        auctionStatus(result[i].dataValues);
+                            auctionStatus(result[i].dataValues);
 
-                        delete result[i].dataValues.userId;
-                        delete result[i].dataValues.createdAt;
-                        delete result[i].dataValues.updatedAt;
+                            delete result[i].dataValues.userId;
+                            delete result[i].dataValues.createdAt;
+                            delete result[i].dataValues.updatedAt;
 
-                        response.auctions.push(result[i].dataValues);
+                            response.auctions.push(result[i].dataValues);
+                        }
                     }
 
                     return res.send(200, response);
@@ -138,7 +144,7 @@ function AuctionsController() {
             .then(
                 function (result) {
 
-                    if(result) {
+                    if (result) {
                         auctionStatus(result.dataValues);
 
                         delete result.dataValues.createdAt;
@@ -146,7 +152,7 @@ function AuctionsController() {
 
                         var auction = result.dataValues;
 
-                        return ProductFacade.readOne(auction.productId).then(function(product) {
+                        return ProductFacade.readOne(auction.productId).then(function (product) {
                             auction.productTitle = product.title;
                             return res.send(200, auction);
 
@@ -169,20 +175,20 @@ function AuctionsController() {
         var auction = req.body;
         auction.userId = req.params.facebookId;
 
-        if (auction.minimumBid <= 5){
-            return res.send(400 , {message: 'minimumBid must be higher than 5.'});
+        if (auction.minimumBid <= 5) {
+            return res.send(400, {message: 'minimumBid must be higher than 5.'});
         }
 
         let startTime = new Date(auction.startDate);
         let endTime = new Date(auction.endDate);
         let currentDate = new Date();
 
-        if (startTime < currentDate){
-            return res.send(400 , {message: 'Invalid start date.'});
+        if (startTime < currentDate) {
+            return res.send(400, {message: 'Invalid start date.'});
         }
 
-        if (endTime < startTime){
-            return res.send(400 , {message: 'Invalid end date.'});
+        if (endTime < startTime) {
+            return res.send(400, {message: 'Invalid end date.'});
         }
 
         getSpecificProduct(auction.productId)
@@ -195,7 +201,7 @@ function AuctionsController() {
                             return res.send(500, {message: err});
                         });
                 } else {
-                    return res.send(400 , {message: 'Product is not pending.'});
+                    return res.send(400, {message: 'Product is not pending.'});
                 }
             });
     };
