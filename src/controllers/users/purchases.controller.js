@@ -6,16 +6,109 @@ var ProductsFacade = require('../../models/facades/ProductsFacade');
 var uuid = require('uuid');
 var UsersFacade = require('../../models/facades/UsersFacade');
 var q = require('q');
+var AddressFacade = require('../../models/facades/AddressesFacade');
+var TelephoneFacade = require('../../models/facades/TelephonesFacade');
+var EmailFacade = require('../../models/facades/EmailsFacade');
 
 function PurchasesController() {
 
-    this.getAll = function (req, res) {
+    this.getOne = function (req, res) {
+        var purchase = {};
+        return PurchaseFacade.readOne(req.params.purchaseId)
+            .then(function(result) {
+                purchase = {
+                    "purchaseId": result.dataValues.purchaseId,
+                    "auctionId": result.dataValues.auctionId,
+                    "productId": result.dataValues.productId,
+                    "reference": result.dataValues.reference,
+                    "status": result.dataValues.status,
+                    "url": result.dataValues.url,
+                    "facebokId": result.dataValues.userId,
+                    "isDelivered": result.dataValues.isDelivered,
+                    "productTitle": "",
+                    "maxBid": 0,
+                    "isPaid":result.dataValues.isPaid
+                };
 
+                return BidsFacade.readMax(purchase.auctionId);
+            }).then(function(bid) {
+                purchase.maxBid = bid;
+                return ProductsFacade.readOne(purchase.productId);
+            }).then(function(product) {
+                purchase.productTitle = product.dataValues.title;
+                return res.send(200, purchase);
+            });
+    };
+
+    this.getDonor = function (req, res) {
+        var user = {};
+        UsersFacade.findOne(req.params.donorsId)
+            .then(function(result) {
+                if(result) {
+                    user = result.dataValues;
+                    delete user.createdAt;
+                    delete user.updatedAt;
+                    delete user.userId;
+                    delete user.token;
+                    delete user.birthday;
+                    delete user.facebookToken;
+                    delete user.facebookId;
+
+                    return AddressFacade.readAll(req.params.donorsId);
+                }
+            })
+            .then(function(result){
+                var address;
+                if(result) {
+                    address = result[0].dataValues;
+                    delete address.createdAt;
+                    delete address.updatedAt;
+                    delete address.addressId;
+                    delete address.neighborhood;
+                    delete address.complement;
+                    delete address.number;
+                    delete address.userId;
+                    delete address.street;
+
+                    user.address = address;
+                }
+
+                return EmailFacade.readAll(req.params.donorsId);
+            })
+            .then(function(result) {
+                if(result.length) {
+                    var emails = [];
+
+                    for(var i in result){
+                        emails.push(result[i].dataValues.email);
+                    }
+
+                    user.emails = emails;
+                }
+                return TelephoneFacade.readAll(req.params.donorsId);
+            }).then(function(result) {
+                if(result.length) {
+                    var telephones = [];
+
+                    for(var i in result){
+                        telephones.push(result[i].dataValues.telephone);
+                    }
+
+                    user.telephones = telephones;
+                }
+
+                return res.send(200, user);
+            });
+
+
+    };
+
+    this.getByAuction = function(req, res) {
         var purchase = {};
 
-        purchase.userId = req.params.facebookId;
+        purchase.auctionId = req.params.auctionId;
 
-        return PurchaseFacade.readAll(purchase.userId)
+        return PurchaseFacade.getByAuction(purchase.auctionId)
             .then(
                 function (result) {
 
@@ -72,6 +165,74 @@ function PurchasesController() {
                 function (err) {
                     return res.send(500, err);
                 });
+    };
+
+    this.getAll = function (req, res) {
+
+        var purchase = {};
+
+        purchase.userId = req.params.facebookId;
+
+        return PurchaseFacade.readAll(purchase.userId)
+            .then(
+                function (result) {
+
+                    var response = {};
+
+                    response.purchases = [];
+                    response.facebookId = purchase.userId;
+
+                    var bidsPromises = [];
+                    var productsPromises = [];
+
+                    if(result) {
+
+                        for (var i = 0; i < result.length; i++) {
+
+                            delete result[i].dataValues.userId;
+                            delete result[i].dataValues.createdAt;
+                            delete result[i].dataValues.updatedAt;
+                            delete result[i].dataValues.paymentId;
+                            delete result[i].dataValues.redirectUrl;
+                            delete result[i].dataValues.reviewUrl;
+                            delete result[i].dataValues.currency;
+                            delete result[i].dataValues.deliveryId;
+
+                            bidsPromises[i] = BidsFacade.readMax(result[i].dataValues.auctionId)
+                                .then(function (bid) {
+                                    if (bid) {
+                                        return bid;
+                                    }
+                                });
+
+                            productsPromises[i] = ProductsFacade.readOne(result[i].dataValues.productId)
+                                .then(function (product) {
+                                    if (product.dataValues) {
+                                        return product.dataValues;
+                                    }
+                                });
+
+                            response.purchases.push(result[i].dataValues);
+                        }
+                    }
+
+                    q.all(productsPromises).done(function () {
+                        q.all(bidsPromises).done(function () {
+
+                            for (i = 0; i < response.purchases.length; i++) {
+                                response.purchases[i].productTitle = productsPromises[i].title;
+                                response.purchases[i].maxBid = bidsPromises[i];
+                            }
+
+                            return res.send(200, response);
+                        });
+
+                    });
+
+                },
+                function (err) {
+                    return res.send(500, err);
+                });
 
     };
 
@@ -108,7 +269,7 @@ function PurchasesController() {
                 postObject.items[0].amount = resolution.toFixed(2);
 
                 return ProductsFacade.readOne(postObject.items[0].id).then(resolution => {
-                    postObject.items[0].description = resolution.dataValues.description;
+                    postObject.items[0].description = "Leilão vencido no lance solidário.";
 
                     client.post("http://localhost:7811/payments", args, function (data, response) {
                         purchase.url = data.url;
@@ -156,16 +317,13 @@ function PurchasesController() {
         return PurchaseFacade.getByReference(reference)
             .then((resolution) => {
                 var purchase = resolution.dataValues;
-                UsersFacade.findOne(purchase.userId).then((resolution) => {
-                    purchase.token = resolution.dataValues.token;
-                    return res.send(200, purchase);
-                });
+                return res.send(200, purchase);
             }, function (err) {
                 return res.send(500, {message: err});
             })
 
 
-    }
+    };
 
 }
 

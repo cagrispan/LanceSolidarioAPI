@@ -12,12 +12,13 @@ var smtpConfig = {
 
 var transporter = nodemailer.createTransport(smtpConfig);
 
-var sendEmail = function(receiver, subject, text, callback) {
+var sendEmail = function(receiver, subject, html, callback) {
     var mailOptions = {
         from: '2W Group', // sender address
         to: receiver, // list of receivers
         subject: subject, // Subject line
-        text: text
+        html: html
+        // text: text
     };
 
     // send mail with defined transport object

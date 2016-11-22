@@ -1,13 +1,16 @@
 var typeStatus = require('./config/type.config'),
-    apiCommunication = require('./services/api.communication.service'),
     uuid = require('uuid'),
     Q = require('q'),
     Client = require('node-rest-client').Client,
-    xml2js = require('xml2js');
+    xml2js = require('xml2js'),
+    jwt = require('jsonwebtoken');
+
 
 var parser = new xml2js.Parser();
 
 exports.filter = function (message) {
+
+    var token = jwt.sign({id: 'jqueue-process'}, 'banana', {algorithm: 'HS256'});
 
     var deferred = Q.defer();
 
@@ -26,16 +29,29 @@ exports.filter = function (message) {
                     var purchase = data;
                     purchase.status = status;
 
+                    if(status === "paid") {
+                        purchase.isPaid = true;
+                    }
+
                     var args = {
                         data: purchase,
                         headers: {
                             "Content-Type": "application/json",
-                            "token": purchase.token
+                            "token": token
                         }
                     };
 
                     client.put("http://localhost:7780/users/" + purchase.userId + "/purchases/" + purchase.purchaseId, args, function (data, response) {
-                        deferred.resolve(true);
+                        client.get("http://localhost:7780/auctions/" + purchase.auctionId + "/products", function (data) {
+                            var product = data.products[0];
+                            product.isSold = true;
+
+                            args.data = product;
+
+                            client.put("http://localhost:7780/users/"+product.userId+"/products/"+product.productId, args, function (data, response) {
+                                deferred.resolve(true);
+                            });
+                        });
                     });
                 });
             });

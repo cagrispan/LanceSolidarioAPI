@@ -18,14 +18,15 @@ function TelephonesController() {
                     response.facebookId = telephone.userId;
                     response.telephones = [];
 
-                    for(var i=0; i<result.length; i++){
-                        delete result[i].dataValues.userId;
-                        delete result[i].dataValues.createdAt;
-                        delete result[i].dataValues.updatedAt;
+                    if(result) {
+                        for(var i=0; i<result.length; i++){
+                            delete result[i].dataValues.userId;
+                            delete result[i].dataValues.createdAt;
+                            delete result[i].dataValues.updatedAt;
 
-                        response.telephones.push(result[i].dataValues);
+                            response.telephones.push(result[i].dataValues);
+                        }
                     }
-
 
                     return res.send(200, response);
                 },

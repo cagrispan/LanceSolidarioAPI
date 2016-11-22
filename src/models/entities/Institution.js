@@ -13,33 +13,39 @@ var sequelize = new Sequelize(
     }
 );
 
-module.exports = sequelize.define('products', {
-    productId: {
+module.exports = sequelize.define('institutions', {
+    institutionId: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
     },
-    userId:{
+    name:{
         type: Sequelize.STRING
     },
-    title: {
+    email: {
         type: Sequelize.STRING
     },
-    description: {
+    about: {
+        type: Sequelize.STRING
+    },
+    responsible: {
+        type: Sequelize.STRING
+    },
+    telephone: {
+        type: Sequelize.STRING
+    },
+    state: {
+        type: Sequelize.STRING
+    },
+    city: {
+        type: Sequelize.STRING
+    },
+    page: {
+        type: Sequelize.STRING
+    },
+    logo: {
         type: Sequelize.TEXT
-    },
-    isUsed: {
-        type: Sequelize.BOOLEAN
-    },
-    isDeleted: {
-        type: Sequelize.BOOLEAN
-    },
-    isSold: {
-        type: Sequelize.BOOLEAN
-    },
-    isDelivered: {
-        type: Sequelize.BOOLEAN
     }
 });
 

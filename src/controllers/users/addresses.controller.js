@@ -18,14 +18,15 @@ function AddressesController() {
                     response.facebookId = address.userId;
                     response.addresses = [];
 
-                    for(var i=0; i<result.length; i++){
-                        delete result[i].dataValues.userId;
-                        delete result[i].dataValues.createdAt;
-                        delete result[i].dataValues.updatedAt;
+                    if (result) {
+                        for (var i = 0; i < result.length; i++) {
+                            delete result[i].dataValues.userId;
+                            delete result[i].dataValues.createdAt;
+                            delete result[i].dataValues.updatedAt;
 
-                        response.addresses.push(result[i].dataValues);
+                            response.addresses.push(result[i].dataValues);
+                        }
                     }
-
 
                     return res.send(200, response);
                 },

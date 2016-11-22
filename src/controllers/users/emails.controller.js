@@ -18,14 +18,15 @@ function EmailsController() {
                     response.facebookId = email.userId;
                     response.emails = [];
 
-                    for(var i=0; i<result.length; i++){
-                        delete result[i].dataValues.userId;
-                        delete result[i].dataValues.createdAt;
-                        delete result[i].dataValues.updatedAt;
+                    if(result) {
+                        for(var i=0; i<result.length; i++){
+                            delete result[i].dataValues.userId;
+                            delete result[i].dataValues.createdAt;
+                            delete result[i].dataValues.updatedAt;
 
-                        response.emails.push(result[i].dataValues);
+                            response.emails.push(result[i].dataValues);
+                        }
                     }
-
 
                     return res.send(200, response);
                 },

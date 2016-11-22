@@ -51,6 +51,9 @@ var purchasesMiddleware = new PurchasesMiddleware();
 var ImagesController = require('./../controllers/products/images.controller');
 var imagesController = new ImagesController();
 
+var InstitutionsController = require('./../controllers/institutions/institutions.controller');
+var institutionsController = new InstitutionsController();
+
 
 
 module.exports = function (server) {
@@ -113,13 +116,15 @@ module.exports = function (server) {
      User Bids
      */
     server.get('/users/:facebookId/bids', [authMiddleware.isLogged, bidsController.getAll]);
-    server.post('/users/:facebookId/bids', [authMiddleware.isLogged, bidsMiddleware.hasAllInformation, bidsMiddleware.isHighestBid, bidsMiddleware.isValidAuction, bidsController.add]);
+    server.post('/users/:facebookId/bids', [authMiddleware.isLogged, bidsMiddleware.hasAllInformation, bidsMiddleware.isValidBid, bidsMiddleware.isHighestBid, bidsMiddleware.isValidAuction, bidsController.add]);
     server.put('/users/:facebookId/bids/:bidId', [authMiddleware.isLogged, bidsMiddleware.hasId, bidsMiddleware.hasAllInformation, bidsController.update]);
 
     /*
      User Purchases
      */
     server.get('/users/:facebookId/purchases', [authMiddleware.isLogged, purchasesController.getAll]);
+    server.get('/users/:facebookId/purchases/:purchaseId', [authMiddleware.isLogged, purchasesController.getOne]);
+    server.get('/users/:facebookId/purchases/:purchaseId/donors/:donorsId', [authMiddleware.isLogged, purchasesController.getDonor]);
     server.get('/purchases/:reference', purchasesController.getByReference);
     server.post('/users/:facebookId/purchases', [authMiddleware.isLogged, purchasesMiddleware.hasAllInformation, purchasesController.add]);
     server.put('/users/:facebookId/purchases/:purchaseId', [authMiddleware.isLogged, purchasesMiddleware.hasId, purchasesMiddleware.hasAllInformation, purchasesController.update]);
@@ -129,6 +134,7 @@ module.exports = function (server) {
      */
     server.get('/auctions', [auctionsController.getAll]);
     server.get('/auctions/:auctionId', [auctionsController.getOne]);
+    server.get('/auctions/:auctionId/purchases', [purchasesController.getByAuction]);
 
     /*
      Auction Bids
@@ -146,4 +152,10 @@ module.exports = function (server) {
     server.post('/users/:facebookId/products/:productId/images', [authMiddleware.isLogged, imagesController.add]);
     server.get('/users/:facebookId/products/:productId/images', [imagesController.get]);
     server.del('/users/:facebookId/products/:productId/images/:imageId', [authMiddleware.isLogged, imagesController.remove]);
+
+    /*
+    Institutions
+     */
+    server.get('/institutions/', [institutionsController.getAll]);
+    server.get('/institutions/:institutionId', [institutionsController.getOne]);
 };
