@@ -1,5 +1,4 @@
 'use strict';
-var AuctionFacade = require('../models/facades/AuctionsFacade');
 
 function AuctionsMiddleware() {
 

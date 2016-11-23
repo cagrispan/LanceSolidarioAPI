@@ -52,7 +52,6 @@ setInterval(function () {
                         client.post("http://localhost:7780/users/" + maxBid.userId + "/purchases", args, function (data, response) {
                             var linkToPay = data.url;
 
-                            console.log('AUCTION: ', auction);
                             delete args.data;
                             client.get("http://localhost:7780/auctions/"+auction.auctionId+"/products", args, function (data) {
                                 var product;
