@@ -24,21 +24,30 @@ DROP TABLE IF EXISTS `addresses`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `addresses` (
   `addressId` int(11) NOT NULL AUTO_INCREMENT,
-  `userId` varchar(255) NOT NULL,
+  `userId` varchar(255) DEFAULT NULL,
   `street` varchar(255) DEFAULT NULL,
   `number` varchar(255) DEFAULT NULL,
   `complement` varchar(255) DEFAULT NULL,
   `neighborhood` varchar(255) DEFAULT NULL,
   `city` varchar(255) DEFAULT NULL,
   `state` varchar(255) DEFAULT NULL,
-  `cep` varchar(255) NOT NULL,
-  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `cep` varchar(255) DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`addressId`),
-  KEY `userId_idx` (`userId`),
-  CONSTRAINT `userIdAddress` FOREIGN KEY (`userId`) REFERENCES `users` (`facebookId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+  KEY `userId` (`userId`),
+  CONSTRAINT `addresses_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`facebookId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `addresses`
+--
+
+LOCK TABLES `addresses` WRITE;
+/*!40000 ALTER TABLE `addresses` DISABLE KEYS */;
+/*!40000 ALTER TABLE `addresses` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `auctions`
@@ -49,24 +58,33 @@ DROP TABLE IF EXISTS `auctions`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `auctions` (
   `auctionId` int(11) NOT NULL AUTO_INCREMENT,
-  `institutionId` int(11) NOT NULL,
-  `productId` int(11) NOT NULL,
-  `userId` varchar(255) NOT NULL,
+  `productId` int(11) DEFAULT NULL,
+  `institutionId` int(11) DEFAULT NULL,
+  `userId` varchar(255) DEFAULT NULL,
   `minimumBid` double DEFAULT NULL,
-  `startDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `endDate` timestamp NULL DEFAULT NULL,
-  `isCanceled` tinyint(1) DEFAULT '0',
-  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `startDate` datetime DEFAULT NULL,
+  `endDate` datetime DEFAULT NULL,
+  `isCanceled` tinyint(1) DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`auctionId`),
-  KEY `userId_idx` (`userId`),
-  KEY `productId_idx` (`productId`),
-  KEY `institutionId_idx` (`institutionId`),
-  CONSTRAINT `institutionIdAuction` FOREIGN KEY (`institutionId`) REFERENCES `institutions` (`institutionId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `productIdAuction` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `userIdAuction` FOREIGN KEY (`userId`) REFERENCES `users` (`facebookId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+  KEY `productId` (`productId`),
+  KEY `institutionId` (`institutionId`),
+  KEY `userId` (`userId`),
+  CONSTRAINT `auctions_ibfk_1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`),
+  CONSTRAINT `auctions_ibfk_2` FOREIGN KEY (`institutionId`) REFERENCES `institutions` (`institutionId`),
+  CONSTRAINT `auctions_ibfk_3` FOREIGN KEY (`userId`) REFERENCES `users` (`facebookId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `auctions`
+--
+
+LOCK TABLES `auctions` WRITE;
+/*!40000 ALTER TABLE `auctions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `auctions` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `bids`
@@ -77,20 +95,29 @@ DROP TABLE IF EXISTS `bids`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `bids` (
   `bidId` int(11) NOT NULL AUTO_INCREMENT,
-  `userId` varchar(255) NOT NULL,
-  `auctionId` int(11) NOT NULL,
-  `bid` double NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `isDeleted` tinyint(1) NOT NULL,
-  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `auctionId` int(11) DEFAULT NULL,
+  `userId` varchar(255) DEFAULT NULL,
+  `bid` double DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  `isDeleted` tinyint(1) DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`bidId`),
-  KEY `userId_idx` (`userId`),
-  KEY `auctionId_idx` (`auctionId`),
-  CONSTRAINT `auctionIdBid` FOREIGN KEY (`auctionId`) REFERENCES `auctions` (`auctionId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `userIdBid` FOREIGN KEY (`userId`) REFERENCES `users` (`facebookId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+  KEY `auctionId` (`auctionId`),
+  KEY `userId` (`userId`),
+  CONSTRAINT `bids_ibfk_1` FOREIGN KEY (`auctionId`) REFERENCES `auctions` (`auctionId`),
+  CONSTRAINT `bids_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`facebookId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bids`
+--
+
+LOCK TABLES `bids` WRITE;
+/*!40000 ALTER TABLE `bids` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bids` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `emails`
@@ -101,15 +128,24 @@ DROP TABLE IF EXISTS `emails`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `emails` (
   `emailId` int(11) NOT NULL AUTO_INCREMENT,
-  `userId` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `userId` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`emailId`),
-  KEY `userId_idx` (`userId`),
-  CONSTRAINT `userIdEmail` FOREIGN KEY (`userId`) REFERENCES `users` (`facebookId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+  KEY `userId` (`userId`),
+  CONSTRAINT `emails_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`facebookId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `emails`
+--
+
+LOCK TABLES `emails` WRITE;
+/*!40000 ALTER TABLE `emails` DISABLE KEYS */;
+/*!40000 ALTER TABLE `emails` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `images`
@@ -120,15 +156,24 @@ DROP TABLE IF EXISTS `images`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `images` (
   `imageId` int(11) NOT NULL AUTO_INCREMENT,
-  `productId` int(11) NOT NULL,
-  `base64` mediumtext,
-  `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `updatedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `productId` int(11) DEFAULT NULL,
+  `base64` text,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`imageId`),
-  KEY `productId_idx` (`productId`),
-  CONSTRAINT `productIdImage` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+  KEY `productId` (`productId`),
+  CONSTRAINT `images_ibfk_1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `images`
+--
+
+LOCK TABLES `images` WRITE;
+/*!40000 ALTER TABLE `images` DISABLE KEYS */;
+/*!40000 ALTER TABLE `images` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `institutions`
@@ -140,19 +185,28 @@ DROP TABLE IF EXISTS `institutions`;
 CREATE TABLE `institutions` (
   `institutionId` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
-  `email` varchar(80) DEFAULT NULL,
-  `telephone` varchar(20) DEFAULT NULL,
-  `responsible` varchar(45) DEFAULT NULL,
-  `about` mediumtext,
-  `state` varchar(45) DEFAULT NULL,
-  `city` varchar(45) DEFAULT NULL,
-  `page` varchar(45) DEFAULT NULL,
-  `logo` mediumtext,
-  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `email` varchar(255) DEFAULT NULL,
+  `about` text,
+  `responsible` varchar(255) DEFAULT NULL,
+  `telephone` varchar(255) DEFAULT NULL,
+  `state` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `page` varchar(255) DEFAULT NULL,
+  `logo` text,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`institutionId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `institutions`
+--
+
+LOCK TABLES `institutions` WRITE;
+/*!40000 ALTER TABLE `institutions` DISABLE KEYS */;
+/*!40000 ALTER TABLE `institutions` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `products`
@@ -163,20 +217,29 @@ DROP TABLE IF EXISTS `products`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `products` (
   `productId` int(11) NOT NULL AUTO_INCREMENT,
-  `userId` varchar(255) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `description` varchar(1023) NOT NULL,
-  `isUsed` tinyint(1) NOT NULL,
-  `isDeleted` tinyint(1) NOT NULL,
+  `userId` varchar(255) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `description` text,
+  `isUsed` tinyint(1) DEFAULT NULL,
+  `isDeleted` tinyint(1) DEFAULT NULL,
   `isSold` tinyint(1) DEFAULT NULL,
   `isDelivered` tinyint(1) DEFAULT NULL,
-  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`productId`),
-  KEY `userId_idx` (`userId`),
-  CONSTRAINT `userIdProduct` FOREIGN KEY (`userId`) REFERENCES `users` (`facebookId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+  KEY `userId` (`userId`),
+  CONSTRAINT `products_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`facebookId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `products`
+--
+
+LOCK TABLES `products` WRITE;
+/*!40000 ALTER TABLE `products` DISABLE KEYS */;
+/*!40000 ALTER TABLE `products` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `purchases`
@@ -187,29 +250,39 @@ DROP TABLE IF EXISTS `purchases`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `purchases` (
   `purchaseId` int(11) NOT NULL AUTO_INCREMENT,
-  `userId` varchar(255) NOT NULL,
-  `productId` int(11) NOT NULL,
-  `auctionId` int(11) NOT NULL,
-  `isDelivered` tinyint(4) DEFAULT NULL,
-  `isPaid` tinyint(4) DEFAULT NULL,
+  `auctionId` int(11) DEFAULT NULL,
+  `productId` int(11) DEFAULT NULL,
+  `userId` varchar(255) DEFAULT NULL,
   `redirectUrl` varchar(255) DEFAULT NULL,
   `reviewUrl` varchar(255) DEFAULT NULL,
   `reference` varchar(255) NOT NULL,
-  `currency` varchar(45) DEFAULT NULL,
-  `status` varchar(45) DEFAULT NULL,
+  `currency` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
   `url` varchar(255) DEFAULT NULL,
-  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `isPaid` tinyint(1) DEFAULT NULL,
+  `isDelivered` tinyint(1) DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`purchaseId`),
-  UNIQUE KEY `reference_UNIQUE` (`reference`),
-  KEY `productId_idx` (`productId`),
-  KEY `auctionId_idx` (`auctionId`),
-  KEY `userId_idx` (`userId`),
-  CONSTRAINT `auctionIdPurchase` FOREIGN KEY (`auctionId`) REFERENCES `auctions` (`auctionId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `productIdPurchase` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `userIdPurchase` FOREIGN KEY (`userId`) REFERENCES `users` (`facebookId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `reference` (`reference`),
+  UNIQUE KEY `purchases_reference_unique` (`reference`),
+  KEY `auctionId` (`auctionId`),
+  KEY `productId` (`productId`),
+  KEY `userId` (`userId`),
+  CONSTRAINT `purchases_ibfk_1` FOREIGN KEY (`auctionId`) REFERENCES `auctions` (`auctionId`),
+  CONSTRAINT `purchases_ibfk_2` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`),
+  CONSTRAINT `purchases_ibfk_3` FOREIGN KEY (`userId`) REFERENCES `users` (`facebookId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `purchases`
+--
+
+LOCK TABLES `purchases` WRITE;
+/*!40000 ALTER TABLE `purchases` DISABLE KEYS */;
+/*!40000 ALTER TABLE `purchases` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `telephones`
@@ -220,15 +293,24 @@ DROP TABLE IF EXISTS `telephones`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `telephones` (
   `telephoneId` int(11) NOT NULL AUTO_INCREMENT,
-  `userId` varchar(255) NOT NULL,
-  `telephone` varchar(255) NOT NULL,
-  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `userId` varchar(255) DEFAULT NULL,
+  `telephone` varchar(255) DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`telephoneId`),
-  KEY `userId_idx` (`userId`),
-  CONSTRAINT `userIdTelephone` FOREIGN KEY (`userId`) REFERENCES `users` (`facebookId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  KEY `userId` (`userId`),
+  CONSTRAINT `telephones_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`facebookId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `telephones`
+--
+
+LOCK TABLES `telephones` WRITE;
+/*!40000 ALTER TABLE `telephones` DISABLE KEYS */;
+/*!40000 ALTER TABLE `telephones` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `users`
@@ -240,18 +322,27 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `userId` int(11) NOT NULL AUTO_INCREMENT,
   `facebookId` varchar(255) NOT NULL,
-  `token` varchar(255) NOT NULL,
   `facebookToken` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `birthday` datetime DEFAULT NULL,
   `profilePicture` varchar(255) DEFAULT NULL,
-  `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
   PRIMARY KEY (`userId`),
   UNIQUE KEY `facebookId` (`facebookId`),
   UNIQUE KEY `users_facebookId_unique` (`facebookId`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -262,4 +353,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-23  2:03:13
+-- Dump completed on 2016-11-23 15:17:52
