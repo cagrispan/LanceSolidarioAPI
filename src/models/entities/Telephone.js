@@ -20,10 +20,11 @@ module.exports = sequelize.define('telephones', {
         primaryKey: true,
         allowNull: false
     },
-    telephone: {
-        type: Sequelize.STRING
-    },
     userId: {
+        type: Sequelize.STRING,
+        references: {model: 'users', key: 'facebookId'}
+    },
+    telephone: {
         type: Sequelize.STRING
     }
 });

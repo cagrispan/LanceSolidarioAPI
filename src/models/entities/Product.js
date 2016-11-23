@@ -21,7 +21,8 @@ module.exports = sequelize.define('products', {
         allowNull: false
     },
     userId:{
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        references: {model: 'users', key: 'facebookId'}
     },
     title: {
         type: Sequelize.STRING

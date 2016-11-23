@@ -21,10 +21,12 @@ module.exports = sequelize.define('bids', {
         allowNull: false
     },
     auctionId:{
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {model: 'auctions', key: 'auctionId'}
     },
     userId: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        references: {model: 'users', key: 'facebookId'}
     },
     bid : {
         type: Sequelize.DOUBLE

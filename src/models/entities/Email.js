@@ -20,10 +20,11 @@ module.exports = sequelize.define('emails', {
         primaryKey: true,
         allowNull: false
     },
-    email: {
-        type: Sequelize.STRING
-    },
     userId: {
+        type: Sequelize.STRING,
+        references: {model: 'users', key: 'facebookId'}
+    },
+    email: {
         type: Sequelize.STRING
     }
 });

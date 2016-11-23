@@ -21,7 +21,8 @@ module.exports = sequelize.define('addresses', {
         allowNull: false
     },
     userId:{
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        references: {model: 'users', key: 'facebookId'}
     },
     street: {
         type: Sequelize.STRING

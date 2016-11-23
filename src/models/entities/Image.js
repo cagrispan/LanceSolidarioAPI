@@ -21,7 +21,8 @@ module.exports = sequelize.define('images', {
         allowNull: false
     },
     productId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {model: 'products', key: 'productId'}
     },
     base64: {
         type: Sequelize.TEXT
