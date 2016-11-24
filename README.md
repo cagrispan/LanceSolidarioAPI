@@ -1,10 +1,12 @@
-#LanceSolidarioAPI
+#LanceSolidarioBackend
 
-RESTful API to serve Lance Solidário App
+Group of APIs and services to serve Lance Solidário system. This APIs are composed
+ by one great API called LanceSolidarioAPI, other API called Pagseguro and three smaller 
+ services called auction-end, auction-cancel and jqueue-process.
 
 ## Getting Started
 
-To get you started you can clone the LanceSolidario repository and install the dependencies:
+To get you started you can clone the this repository and install the dependencies:
 
 ### Prerequisites
 
@@ -16,17 +18,32 @@ You also must have MySQL installed. You can get it from [MySQL](https://www.mysq
 
 * We get the tools we depend upon via `npm`, the [node package manager][npm], which is installed with Node.js.
 
-By cmd, we are going to the project folder and to run the command:
-
+The project is structured like:
+ ```
+ LanceSolidarioAPI (main folder)
+    - auction-cancel (service)
+    - auction-end (service)
+    - db (database configuration)
+    - jqueue-process (service)
+    - pagseguro (API)
+    - src (Main API)
+ ```
+ 
+ To run project is necessary install all dependencies for all services
+ and APIs. To do it is necessary open cmd and inside of each service or API folder
+  (auction-cancel, auction-end, jqueue-process, pagseguro, src)
+ run command:
 ```
 npm install
 ```
 
-You should find that you have a new folder in your project.
+You should find that you have a new folder called node_modules, in your main folder(LanceSolidarioAPI),
+as well in services and APIs folders(auction-cancel, auction-end, jqueue-process, pagseguro).
 
 * `node_modules` - contains the npm packages for the tools we need
 
-Besides it, you will find a folder called db with a sql file to create the necessary database.
+Besides it, you will find a folder called db with a sql file to create the necessary database,
+even as a file called createDB that can be used to create the same structure on database.
 
 ### Run the Application
 
@@ -37,3 +54,11 @@ node app.js
 ```
 
 Now server is running on port 7780.
+
+### Git commit convention:
+
+To development for this project, is necessary follow a commit pattern,
+to facilitate understanding what commit is about.
+In this project, is used Angular Git Commit Convention, one of most
+famous git commit conventions.
+To more information about this convention, [click here](https://gist.github.com/stephenparish/9941e89d80e2bc58a153#format-of-the-commit-message).
