@@ -102,13 +102,14 @@ sequelize.define('auctions', {
         type: Sequelize.DOUBLE
     },
     startDate: {
-        type: Sequelize.DATE
+        type: Sequelize.TIME
     },
     endDate: {
-        type: Sequelize.DATE
+        type: Sequelize.TIME
     },
     isCanceled: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
     }
 });
 
@@ -131,7 +132,7 @@ sequelize.define('bids', {
         type: Sequelize.DOUBLE
     },
     date: {
-        type: Sequelize.DATE
+        type: Sequelize.TIME
     },
     isDeleted: {
         type: Sequelize.BOOLEAN
@@ -166,7 +167,7 @@ sequelize.define('images', {
         references: {model: 'products', key: 'productId'}
     },
     base64: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT('medium')
     }
 });
 
@@ -184,7 +185,7 @@ sequelize.define('institutions', {
         type: Sequelize.STRING
     },
     about: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT('medium')
     },
     responsible: {
         type: Sequelize.STRING
@@ -202,7 +203,7 @@ sequelize.define('institutions', {
         type: Sequelize.STRING
     },
     logo: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT('medium')
     }
 });
 
@@ -221,7 +222,7 @@ sequelize.define('products', {
         type: Sequelize.STRING
     },
     description: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT('medium')
     },
     isUsed: {
         type: Sequelize.BOOLEAN

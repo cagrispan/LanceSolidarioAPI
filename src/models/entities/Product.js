@@ -28,7 +28,7 @@ module.exports = sequelize.define('products', {
         type: Sequelize.STRING
     },
     description: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT('medium')
     },
     isUsed: {
         type: Sequelize.BOOLEAN
