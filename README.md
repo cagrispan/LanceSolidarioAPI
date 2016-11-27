@@ -97,7 +97,7 @@ To run the project you have two options, run service by service with node or use
     ```
     
     That command without id will result in the output of all services that are running by pm2. To get the id of one service
-    just run see the second column of the table resulted of this command:
+    just see the second column of the resulted table of this command:
     
     ```
     pm2 status
