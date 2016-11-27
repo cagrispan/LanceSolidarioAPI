@@ -53,7 +53,7 @@ To run the project you have two options, run service by service with node or use
     the second element is the command you need run. Each line will be a different process, so you need to run each
     line in different instances of you CMD(Terminal).
     
-    ```
+   ```
     directory: src/                 command: node app.js
     directory: pagseguro/app        command: node index.js
     directory: jqueue-process/app   command: node index.js
@@ -63,44 +63,44 @@ To run the project you have two options, run service by service with node or use
 
 +   To use this method with pm2 you will need to install it, you can do this wih npm just running this command:
 
-    ...
+    ```
     npm install pm2 -g
-    ...
+    ```
     
     With pm2 correctly installed you can run those commands to start, stop, restart or delete all the processes of LanceSolidarionBackend:
     
     Start:
-    ...
+    ```
     pm2 start processes.json
-    ...
+    ```
     
     Stop:
-    ...
+    ```
     pm2 stop processes.json
-    ...
+    ```
     
     Restart:
-    ...
+    ```
     pm2 restart processes.json
-    ...
+    ```
     
     Delete:
-    ...
+    ```
     pm2 delete processes.json
-    ...
+    ```
     
     To see console output of a service you can use the command:
     
-    ...
+    ```
     pm2 logs [id]
-    ...
+    ```
     
     That command without id will result in the output of all services that are running by pm2. To get the id of one service
     just run see the second column of the table resulted of this command:
     
-    ...
+    ```
     pm2 status
-    ...
+    ```
     
     More information of pm2 usage please see the pm2 WebSite [Pm2] http://pm2.keymetrics.io/
 
