@@ -49,7 +49,7 @@ even as a file called createDB that can be used to create the same structure on 
 
 To run the project you have two options, run service by service with node or use a service manager like pm2.
 
-+    For the first one you need follow this list, the first element of each line is the directory that you need to be,
++   For the first one you need follow this list, the first element of each line is the directory that you need to be,
     the second element is the command you need run. Each line will be a different process, so you need to run each
     line in different instances of you CMD(Terminal).
     
@@ -61,7 +61,8 @@ To run the project you have two options, run service by service with node or use
     directory: auction-cancel/app   command: node index.es6
     ```
 
-+   To use this method with pm2 you will need to install it, you can do this wih npm just running this command:
++   To use the second method you will need a service manager. We highly recommend you to use pm2, if this is your choise 
+    the first thing to do will be install it. You easily can do this with npm, you just need running this command:
 
     ```
     npm install pm2 -g
