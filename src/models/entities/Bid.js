@@ -32,7 +32,7 @@ module.exports = sequelize.define('bids', {
         type: Sequelize.DOUBLE
     },
     date: {
-        type: Sequelize.TIME
+        type: Sequelize.DATE
     },
     isDeleted: {
         type: Sequelize.BOOLEAN

@@ -102,10 +102,10 @@ sequelize.define('auctions', {
         type: Sequelize.DOUBLE
     },
     startDate: {
-        type: Sequelize.TIME
+        type: Sequelize.DATE
     },
     endDate: {
-        type: Sequelize.TIME
+        type: Sequelize.DATE
     },
     isCanceled: {
         type: Sequelize.BOOLEAN,
@@ -132,7 +132,7 @@ sequelize.define('bids', {
         type: Sequelize.DOUBLE
     },
     date: {
-        type: Sequelize.TIME
+        type: Sequelize.DATE
     },
     isDeleted: {
         type: Sequelize.BOOLEAN

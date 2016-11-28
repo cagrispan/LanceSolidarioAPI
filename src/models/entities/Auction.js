@@ -36,10 +36,10 @@ module.exports = sequelize.define('auctions', {
         type: Sequelize.DOUBLE
     },
     startDate: {
-        type: Sequelize.TIME
+        type: Sequelize.DATE
     },
     endDate: {
-        type: Sequelize.TIME
+        type: Sequelize.DATE
     },
     isCanceled: {
         type: Sequelize.BOOLEAN,
