@@ -21,19 +21,16 @@ module.exports = sequelize.define('purchases', {
         allowNull: false
     },
     auctionId:{
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {model: 'auctions', key: 'auctionId'}
     },
     productId: {
-        type: Sequelize.INTEGER
-    },
-    paymentId: {
-        type: Sequelize.INTEGER
-    },
-    deliveryId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {model: 'products', key: 'productId'}
     },
     userId: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        references: {model: 'users', key: 'facebookId'}
     },
     redirectUrl: {
         type: Sequelize.STRING

@@ -21,13 +21,16 @@ module.exports = sequelize.define('auctions', {
         allowNull: false
     },
     productId:{
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {model: 'products', key: 'productId'}
     },
     institutionId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {model: 'institutions', key: 'institutionId'}
     },
     userId: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        references: {model: 'users', key: 'facebookId'}
     },
     minimumBid : {
         type: Sequelize.DOUBLE
@@ -39,7 +42,8 @@ module.exports = sequelize.define('auctions', {
         type: Sequelize.DATE
     },
     isCanceled: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
     }
 });
 

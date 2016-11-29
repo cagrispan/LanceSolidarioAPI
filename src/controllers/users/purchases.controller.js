@@ -317,6 +317,10 @@ function PurchasesController() {
         return PurchaseFacade.getByReference(reference)
             .then((resolution) => {
                 var purchase = resolution.dataValues;
+                delete purchase.createdAt;
+                delete purchase.updatedAt;
+                delete purchase.currency;
+
                 return res.send(200, purchase);
             }, function (err) {
                 return res.send(500, {message: err});
