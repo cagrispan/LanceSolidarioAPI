@@ -113,3 +113,20 @@ to facilitate understanding what commit is about.
 In this project, is used Angular Git Commit Convention, one of most
 famous git commit conventions.
 To more information about this convention, [click here](https://gist.github.com/stephenparish/9941e89d80e2bc58a153#format-of-the-commit-message).
+
+### Tests, Code Style and Best Pratices
+
+Grunt is used as Task Manager, so you ned to install it:
+
+```
+npm install grunt-cli -g
+```
+
+You can run all tests, jshint and jscs at once:
+
+```
+grunt test
+```
+
+We strongly recommend run the command above before commit.
+
