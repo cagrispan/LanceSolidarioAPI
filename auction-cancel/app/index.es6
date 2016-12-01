@@ -16,6 +16,7 @@ setInterval(function () {
 
     con.query(query, function (err, rows) {
         if (err) throw err;
+        con.end();
 
         for (var i in rows) {
             let auction = rows[i];
