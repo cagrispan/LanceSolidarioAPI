@@ -16,6 +16,7 @@ setInterval(function () {
 
     con.query(query, function (err, rows) {
 
+        con.end();
         if (err) console.log(err);
 
         for (var i in rows) {
@@ -53,9 +54,9 @@ setInterval(function () {
                             var linkToPay = data.url;
 
                             delete args.data;
-                            client.get("http://localhost:7780/auctions/"+auction.auctionId+"/products", args, function (data) {
+                            client.get("http://localhost:7780/auctions/" + auction.auctionId + "/products", args, function (data) {
                                 var product;
-                                if(data.products) {
+                                if (data.products) {
                                     product = data.products[0];
                                 }
                                 client.get("http://localhost:7780/users/" + maxBid.userId + "/emails", args, function (data) {
@@ -106,6 +107,42 @@ setInterval(function () {
                                 });
                             });
 
+                        });
+                    } else {
+
+                        let putObject = {
+                            "startDate": auction.startDate,
+                            "endDate": auction.endDate,
+                            "institutionId": auction.institutionId,
+                            "productId": auction.productId,
+                            "minimumBid": auction.minimumBid,
+                            "isCanceled": true
+                        };
+
+                        let args = {
+                            data: putObject,
+                            headers: {
+                                "Content-Type": "application/json",
+                                "token": token
+                            }
+                        };
+
+                        client.put(config.path + "/users/" + auction.userId + "/auctions/" + auction.auctionId, args, function () {
+                        });
+
+                        client.get("http://localhost:7780/auctions/" + auction.auctionId + "/products", args, function (data) {
+                            var product;
+                            if (data.products) {
+                                product = data.products[0];
+                            }
+                            product.isSold = false;
+                            product.isDeleted = false;
+                            product.isUsed = false;
+                            product.isDelivred = false;
+
+                            putObject = product;
+                            args.data = putObject;
+                            client.put(config.path + "/users/" + auction.userId + "/products/" + product.productId, args, function (data) {});
                         });
                     }
                 });
