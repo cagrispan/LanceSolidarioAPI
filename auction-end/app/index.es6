@@ -7,16 +7,15 @@ var config = require('../app/config/env.config');
 
 console.log('Start auction-end task, running each %s second(s)', config.taskTimeout / 1000);
 setInterval(function () {
-    var con = mysql.createConnection(config.dbConfig);
+    var pool = mysql.createPool(config.dbConfig);
 
     //Magic query, vlw flws \o/
     let query = 'SELECT auctions.* FROM auctions LEFT JOIN purchases ON auctions.auctionId = purchases.auctionId where purchases.auctionId is null && auctions.isCanceled = 0 && TIMESTAMPDIFF(MINUTE,now(),endDate)<0;';
     var client = new Client();
     var token = jwt.sign({id: 'auction-end'}, 'banana', {algorithm: 'HS256'});
 
-    con.query(query, function (err, rows) {
+    pool.query(query, function (err, rows) {
 
-        con.end();
         if (err) console.log(err);
 
         for (var i in rows) {
