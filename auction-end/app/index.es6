@@ -42,7 +42,7 @@ setInterval(function () {
                     for (var i in bids) {
                         if (i == 0) {
                             maxBid = bids[i];
-                        } else if (bids[i].bid > maxBid.bid) {
+                        } else if (bids[i].bid > maxBid.bid && !bids[i].isDeleted) {
                             maxBid = bids[i];
                         }
 
