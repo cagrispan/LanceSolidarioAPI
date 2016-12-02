@@ -59,15 +59,19 @@ function ProductsController() {
             .then(
                 function (result) {
 
-                    return productStatus(result.dataValues)
-                        .then((product) => {
+                    if(result) {
+                        return productStatus(result.dataValues)
+                            .then((product) => {
 
-                            delete product.userId;
-                            delete product.createdAt;
-                            delete product.updatedAt;
+                                delete product.userId;
+                                delete product.createdAt;
+                                delete product.updatedAt;
 
-                            return res.send(200, product);
-                        });
+                                return res.send(200, product);
+                            });
+                    } else {
+                        return res.send(200, {});
+                    }
 
                 },
                 function (err) {

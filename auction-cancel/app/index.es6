@@ -5,10 +5,10 @@ var jwt = require('jsonwebtoken');
 var config = require('../app/config/env.config');
 
 var con = mysql.createConnection(config.dbConfig);
-console.log('Start auction-cancel task, running each %s second(s)',config.taskTimeout/1000);
+console.log('Start auction-cancel task, running each %s second(s)', config.taskTimeout / 1000);
 setInterval(function () {
 
-        let query = 'SELECT auctions.*,TIMESTAMPDIFF(MINUTE ,now(),auctions.endDate) FROM auctions LEFT JOIN purchases ON auctions.auctionId = purchases.auctionId where purchases.auctionId = auctions.auctionId && auctions.isCanceled = 0 && purchases.status = \'PENDING\' && TIMESTAMPDIFF(MINUTE ,now(),auctions.endDate)<=(-14400)';
+    let query = 'SELECT auctions.*,TIMESTAMPDIFF(MINUTE ,now(),auctions.endDate) FROM auctions LEFT JOIN purchases ON auctions.auctionId = purchases.auctionId where purchases.auctionId = auctions.auctionId && auctions.isCanceled = 0 && purchases.status = \'PENDING\' && TIMESTAMPDIFF(MINUTE ,now(),auctions.endDate)<=(-14400)';
 
     var client = new Client();
     var token = jwt.sign({id: 'auction-end'}, 'banana', {algorithm: 'HS256'});
@@ -63,7 +63,7 @@ setInterval(function () {
                             };
 
                             client.put(config.path + "/users/" + auction.auctionId + "/purchases/" + purchase.purchaseId, args, function (data) {
-                                console.log('Auction '+auction.auctionId+' canceled.');
+                                console.log('Auction ' + auction.auctionId + ' canceled.');
                             });
                         }
                     }
