@@ -24,7 +24,9 @@ function InstitutionsController() {
 
         return InstitutionsFacade.readOne(req.params.institutionId)
             .then(function (result) {
-
+                    if(!result){
+                        return res.send(404);
+                    }
                     delete result.dataValues.createdAt;
                     delete result.dataValues.updatedAt;
 
