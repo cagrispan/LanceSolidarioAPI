@@ -4,7 +4,7 @@ var Client = require('node-rest-client').Client;
 var jwt = require('jsonwebtoken');
 var config = require('../app/config/env.config');
 
-var con = mysql.createConnection(config.dbConfig);
+var pool = mysql.createPool(config.dbConfig);
 console.log('Start auction-cancel task, running each %s second(s)', config.taskTimeout / 1000);
 setInterval(function () {
 
@@ -13,8 +13,7 @@ setInterval(function () {
     var client = new Client();
     var token = jwt.sign({id: 'auction-end'}, 'banana', {algorithm: 'HS256'});
 
-
-    con.query(query, function (err, rows) {
+    pool.query(query, function (err, rows) {
         if (err) throw err;
 
         for (var i in rows) {
@@ -62,7 +61,7 @@ setInterval(function () {
                                 }
                             };
 
-                            client.put(config.path + "/users/" + auction.auctionId + "/purchases/" + purchase.purchaseId, args, function (data) {
+                            client.put(config.path + "/users/" + auction.userId + "/purchases/" + purchase.purchaseId, args, function (data) {
                                 console.log('Auction ' + auction.auctionId + ' canceled.');
                             });
                         }
@@ -71,5 +70,6 @@ setInterval(function () {
             }
         }
     });
+
 }, config.taskTimeout);
 

@@ -273,15 +273,20 @@ function PurchasesController() {
 
                     client.post("http://localhost:7811/payments", args, function (data, response) {
                         purchase.url = data.url;
-                        return PurchaseFacade.create(purchase)
-                            .then(function (result) {
-                                return res.send(201, {
-                                    purchaseId: result.dataValues.purchaseId,
-                                    url: data.url
+                        if(purchase.url) {
+                            return PurchaseFacade.create(purchase)
+                                .then(function (result) {
+                                    return res.send(201, {
+                                        purchaseId: result.dataValues.purchaseId,
+                                        url: data.url
+                                    });
+                                }, function (err) {
+                                    return res.send(500, {message: err});
                                 });
-                            }, function (err) {
-                                return res.send(500, {message: err});
-                            });
+                        } else {
+                            return res.send(500, {message: "pagseguro service is broken"});
+                        }
+
                     });
 
 
