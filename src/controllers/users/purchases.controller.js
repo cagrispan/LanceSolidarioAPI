@@ -15,7 +15,10 @@ function PurchasesController() {
     this.getOne = function (req, res) {
         var purchase = {};
         return PurchaseFacade.readOne(req.params.purchaseId)
-            .then(function(result) {
+            .then(function (result) {
+                if (!result) {
+                    return res.send(404, purchase);
+                };
                 purchase = {
                     "purchaseId": result.dataValues.purchaseId,
                     "auctionId": result.dataValues.auctionId,
@@ -27,24 +30,24 @@ function PurchasesController() {
                     "isDelivered": result.dataValues.isDelivered,
                     "productTitle": "",
                     "maxBid": 0,
-                    "isPaid":result.dataValues.isPaid
+                    "isPaid": result.dataValues.isPaid
                 };
 
                 return BidsFacade.readMax(purchase.auctionId);
-            }).then(function(bid) {
+            }).then(function (bid) {
                 purchase.maxBid = bid;
                 return ProductsFacade.readOne(purchase.productId);
-            }).then(function(product) {
+            }).then(function (product) {
                 purchase.productTitle = product.dataValues.title;
-                return res.send(200, purchase);
+
             });
     };
 
     this.getDonor = function (req, res) {
         var user = {};
         UsersFacade.findOne(req.params.donorsId)
-            .then(function(result) {
-                if(result) {
+            .then(function (result) {
+                if (result) {
                     user = result.dataValues;
                     delete user.createdAt;
                     delete user.updatedAt;
@@ -57,9 +60,9 @@ function PurchasesController() {
                     return AddressFacade.readAll(req.params.donorsId);
                 }
             })
-            .then(function(result){
+            .then(function (result) {
                 var address;
-                if(result) {
+                if (result) {
                     address = result[0].dataValues;
                     delete address.createdAt;
                     delete address.updatedAt;
@@ -75,35 +78,35 @@ function PurchasesController() {
 
                 return EmailFacade.readAll(req.params.donorsId);
             })
-            .then(function(result) {
-                if(result.length) {
+            .then(function (result) {
+                if (result.length) {
                     var emails = [];
 
-                    for(var i in result){
+                    for (var i in result) {
                         emails.push(result[i].dataValues.email);
                     }
 
                     user.emails = emails;
                 }
                 return TelephoneFacade.readAll(req.params.donorsId);
-            }).then(function(result) {
-                if(result.length) {
-                    var telephones = [];
+            }).then(function (result) {
+            if (result.length) {
+                var telephones = [];
 
-                    for(var i in result){
-                        telephones.push(result[i].dataValues.telephone);
-                    }
-
-                    user.telephones = telephones;
+                for (var i in result) {
+                    telephones.push(result[i].dataValues.telephone);
                 }
 
-                return res.send(200, user);
-            });
+                user.telephones = telephones;
+            }
+
+            return res.send(200, user);
+        });
 
 
     };
 
-    this.getByAuction = function(req, res) {
+    this.getByAuction = function (req, res) {
         var purchase = {};
 
         purchase.auctionId = req.params.auctionId;
@@ -140,7 +143,7 @@ function PurchasesController() {
 
                         productsPromises[i] = ProductsFacade.readOne(result[i].dataValues.productId)
                             .then(function (product) {
-                                if(product.dataValues){
+                                if (product.dataValues) {
                                     return product.dataValues;
                                 }
                             });
@@ -185,7 +188,7 @@ function PurchasesController() {
                     var bidsPromises = [];
                     var productsPromises = [];
 
-                    if(result) {
+                    if (result) {
 
                         for (var i = 0; i < result.length; i++) {
 
@@ -273,15 +276,20 @@ function PurchasesController() {
 
                     client.post("http://localhost:7811/payments", args, function (data, response) {
                         purchase.url = data.url;
-                        return PurchaseFacade.create(purchase)
-                            .then(function (result) {
-                                return res.send(201, {
-                                    purchaseId: result.dataValues.purchaseId,
-                                    url: data.url
+                        if (purchase.url) {
+                            return PurchaseFacade.create(purchase)
+                                .then(function (result) {
+                                    return res.send(201, {
+                                        purchaseId: result.dataValues.purchaseId,
+                                        url: data.url
+                                    });
+                                }, function (err) {
+                                    return res.send(500, {message: err});
                                 });
-                            }, function (err) {
-                                return res.send(500, {message: err});
-                            });
+                        } else {
+                            return res.send(500, {message: "pagseguro service is broken"});
+                        }
+
                     });
 
 

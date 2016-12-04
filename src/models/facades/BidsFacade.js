@@ -14,7 +14,7 @@ function readAll(whereItem) {
 }
 
 function readMax(auctionId) {
-    return bidEntity.max('bid', {where: {auctionId: auctionId}});
+    return bidEntity.max('bid', {where: {auctionId: auctionId, isDeleted: false}});
 }
 
 function update(bid) {

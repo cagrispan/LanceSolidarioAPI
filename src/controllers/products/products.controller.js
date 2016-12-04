@@ -70,7 +70,7 @@ function ProductsController() {
                                 return res.send(200, product);
                             });
                     } else {
-                        return res.send(200, {});
+                        return res.send(404);
                     }
 
                 },

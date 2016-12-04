@@ -4,17 +4,18 @@ var Client = require('node-rest-client').Client;
 var jwt = require('jsonwebtoken');
 var sendEmail = require('./services/email.service');
 var config = require('../app/config/env.config');
+var pool = mysql.createPool(config.dbConfig);
 
-console.log('Start auction-end task, running each %s second(s)', config.taskTimeout / 1000);
+
+console.log('Start auction-end task, running each %s second(s)', config.taskTimeout);
 setInterval(function () {
-    var con = mysql.createConnection(config.dbConfig);
 
     //Magic query, vlw flws \o/
     let query = 'SELECT auctions.* FROM auctions LEFT JOIN purchases ON auctions.auctionId = purchases.auctionId where purchases.auctionId is null && auctions.isCanceled = 0 && TIMESTAMPDIFF(MINUTE,now(),endDate)<0;';
     var client = new Client();
     var token = jwt.sign({id: 'auction-end'}, 'banana', {algorithm: 'HS256'});
 
-    con.query(query, function (err, rows) {
+    pool.query(query, function (err, rows) {
 
         if (err) console.log(err);
 
@@ -42,7 +43,7 @@ setInterval(function () {
                     for (var i in bids) {
                         if (i == 0) {
                             maxBid = bids[i];
-                        } else if (bids[i].bid > maxBid.bid) {
+                        } else if (bids[i].bid > maxBid.bid && !bids[i].isDeleted) {
                             maxBid = bids[i];
                         }
 
@@ -53,9 +54,9 @@ setInterval(function () {
                             var linkToPay = data.url;
 
                             delete args.data;
-                            client.get("http://localhost:7780/auctions/"+auction.auctionId+"/products", args, function (data) {
+                            client.get("http://localhost:7780/auctions/" + auction.auctionId + "/products", args, function (data) {
                                 var product;
-                                if(data.products) {
+                                if (data.products) {
                                     product = data.products[0];
                                 }
                                 client.get("http://localhost:7780/users/" + maxBid.userId + "/emails", args, function (data) {
@@ -107,11 +108,47 @@ setInterval(function () {
                             });
 
                         });
+                    } else {
+
+                        let putObject = {
+                            "startDate": auction.startDate,
+                            "endDate": auction.endDate,
+                            "institutionId": auction.institutionId,
+                            "productId": auction.productId,
+                            "minimumBid": auction.minimumBid,
+                            "isCanceled": true
+                        };
+
+                        let args = {
+                            data: putObject,
+                            headers: {
+                                "Content-Type": "application/json",
+                                "token": token
+                            }
+                        };
+
+                        client.put(config.path + "/users/" + auction.userId + "/auctions/" + auction.auctionId, args, function () {
+                        });
+
+                        client.get("http://localhost:7780/auctions/" + auction.auctionId + "/products", args, function (data) {
+                            var product;
+                            if (data.products) {
+                                product = data.products[0];
+                            }
+                            product.isSold = false;
+                            product.isDeleted = false;
+                            product.isUsed = false;
+                            product.isDelivred = false;
+
+                            putObject = product;
+                            args.data = putObject;
+                            client.put(config.path + "/users/" + auction.userId + "/products/" + product.productId, args, function (data) {});
+                        });
                     }
                 });
             }
 
         }
     });
-}, config.taskTimeout);
+}, config.taskTimeout*1000);
 
