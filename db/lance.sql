@@ -248,7 +248,7 @@ CREATE TABLE `users` (
   `facebookToken` varchar(255) NOT NULL,
   `token` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `birthday` datetime DEFAULT NULL,
+  `birthday` date DEFAULT NULL,
   `profilePicture` varchar(255) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
