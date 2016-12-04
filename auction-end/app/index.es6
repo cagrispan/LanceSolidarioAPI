@@ -4,10 +4,11 @@ var Client = require('node-rest-client').Client;
 var jwt = require('jsonwebtoken');
 var sendEmail = require('./services/email.service');
 var config = require('../app/config/env.config');
+var pool = mysql.createPool(config.dbConfig);
 
-console.log('Start auction-end task, running each %s second(s)', config.taskTimeout / 1000);
+
+console.log('Start auction-end task, running each %s second(s)', config.taskTimeout);
 setInterval(function () {
-    var pool = mysql.createPool(config.dbConfig);
 
     //Magic query, vlw flws \o/
     let query = 'SELECT auctions.* FROM auctions LEFT JOIN purchases ON auctions.auctionId = purchases.auctionId where purchases.auctionId is null && auctions.isCanceled = 0 && TIMESTAMPDIFF(MINUTE,now(),endDate)<0;';
@@ -149,5 +150,5 @@ setInterval(function () {
 
         }
     });
-}, config.taskTimeout);
+}, config.taskTimeout*1000);
 
