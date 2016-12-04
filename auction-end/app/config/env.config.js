@@ -7,5 +7,5 @@ module.exports = {
         password: 'admin',
         database: 'lance'
     },
-    'taskTimeout': 60000
+    'taskTimeout': 30 //seconds
 };
