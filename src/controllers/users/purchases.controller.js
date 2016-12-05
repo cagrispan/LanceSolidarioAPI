@@ -18,7 +18,7 @@ function PurchasesController() {
             .then(function (result) {
                 if (!result) {
                     return res.send(404, purchase);
-                };
+                }
                 purchase = {
                     "purchaseId": result.dataValues.purchaseId,
                     "auctionId": result.dataValues.auctionId,
@@ -33,13 +33,15 @@ function PurchasesController() {
                     "isPaid": result.dataValues.isPaid
                 };
 
+                purchase.isCanceled = result.status === "CANCELED";
+
                 return BidsFacade.readMax(purchase.auctionId);
             }).then(function (bid) {
                 purchase.maxBid = bid;
                 return ProductsFacade.readOne(purchase.productId);
             }).then(function (product) {
                 purchase.productTitle = product.dataValues.title;
-
+                return res.send(200, purchase);
             });
     };
 
@@ -200,6 +202,8 @@ function PurchasesController() {
                             delete result[i].dataValues.reviewUrl;
                             delete result[i].dataValues.currency;
                             delete result[i].dataValues.deliveryId;
+
+                            result[i].dataValues.isCanceled = result[i].dataValues.status === "CANCELED";
 
                             bidsPromises[i] = BidsFacade.readMax(result[i].dataValues.auctionId)
                                 .then(function (bid) {
