@@ -127,7 +127,6 @@ function PurchasesController() {
 
                     for (var i = 0; i < result.length; i++) {
 
-                        delete result[i].dataValues.userId;
                         delete result[i].dataValues.createdAt;
                         delete result[i].dataValues.updatedAt;
                         delete result[i].dataValues.paymentId;
