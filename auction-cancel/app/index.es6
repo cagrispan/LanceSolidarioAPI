@@ -61,7 +61,7 @@ setInterval(function () {
                                 }
                             };
 
-                            client.put(config.path + "/users/" + auction.userId + "/purchases/" + purchase.purchaseId, args, function (data) {
+                            client.put(config.path + "/users/" + purchase.userId + "/purchases/" + purchase.purchaseId, args, function (data) {
                                 console.log('Auction ' + auction.auctionId + ' canceled.');
                             });
                         }
